@@ -1,0 +1,47 @@
+{
+  "name": "@your-org/cms-content-model",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Content model library for Optical CMS using SGDS web components",
+
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && vite build",
+    "build:examples": "BUILD_EXAMPLE=true vite build",
+    "dev": "vite",
+    "dev:media-gallery": "BUILD_EXAMPLE=true vite",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "check-format": "prettier --check \"**/*.{ts,js,json,md}\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@govtechsg/sgds-web-component": "^3.0.5"
+  },
+  "devDependencies": {
+    "@eslint-community/eslint-utils": "^4.7.0",
+    "@eslint-community/regexpp": "^4.12.1",
+    "@eslint/js": "^9.28.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Posts Example</title>
+  <!-- SGDS Web Components (CSS only, JS loaded via TS) -->
+  <link rel="stylesheet" href="/node_modules/@govtechsg/sgds-web-component/themes/root.css" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .posts-gallery {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Posts Example</h1>
+    <div id="posts-gallery" class="posts-gallery"></div>
+  </div>
+  <script type="module" src="./posts.js"></script>
+</body>
+</html>
