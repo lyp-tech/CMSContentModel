@@ -36,4 +36,20 @@ export interface HeroSectionOptions {
   searchAction?: string;
   /** Array of highlight items to display */
   highlights?: HeroHighlightItem[];
+  
+  /** Hero section configuration */
+  hero?: {
+    /** Main title of the hero section */
+    title: string;
+    /** Subtitle text */
+    subtitle: string;
+    /** Placeholder text for the hero search input */
+    searchPlaceholder: string;
+    /** List of popular search terms */
+    popularSearches: string[];
+    /** Optional background image URL */
+    backgroundImage?: string;
+    /** Optional foreground image URL */
+    foregroundImage?: string;
+  };
 }

@@ -8,11 +8,21 @@ function initializeHeroExample() {
         navItems: [
             { text: 'Academic calendar', url: '/academic-calendar' },
             { text: 'Admissions', url: '/admissions' },
-            { text: 'Careers', url: '/careers' },
-            { text: 'Careers', url: '/careers' },
-            { text: 'Careers', url: '/careers' },
             { text: 'Careers', url: '/careers' }
         ],
+        hero: {
+            title: 'Ministry of Education',
+            subtitle: 'Moulding the future of our nation.',
+            searchPlaceholder: 'What are you searching for?',
+            popularSearches: [
+                'P1 registration',
+                'DSA-Sec',
+                'DSA-JC',
+                'School terms and holidays'
+            ],
+            backgroundImage: '../img/curve-header.svg',
+            foregroundImage: '../img/hero-illustration.svg'
+        },
         searchPlaceholder: 'Search MOE',
         searchAction: '/search',
         highlights: [
