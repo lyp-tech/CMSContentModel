@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Posts Example</title>
-  <!-- SGDS Web Components (CSS only, JS loaded via TS) -->
-  <link rel="stylesheet" href="/node_modules/@govtechsg/sgds-web-component/themes/root.css" />
+  <link rel="stylesheet" href="../global.css" />
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -23,12 +22,17 @@
       margin-top: 2rem;
     }
   </style>
+  <script type="module">
+    import { renderPage } from '../shared/layout.js';
+
+    const content = `
+        <div id="posts-gallery" class="posts-gallery"></div>
+      `;
+
+    document.body.innerHTML = renderPage('Posts Example', content);
+  </script>
 </head>
-<body>
-  <div class="container">
-    <h1>Posts Example</h1>
-    <div id="posts-gallery" class="posts-gallery"></div>
-  </div>
+<body class="bg-gray-50 min-h-screen">
   <script type="module" src="./posts.js"></script>
 </body>
 </html>

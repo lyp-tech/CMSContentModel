@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import { defineConfig } from 'vite'
 
 export default defineConfig(({ mode }) => {
   const isExampleBuild = process.env.BUILD_EXAMPLE === 'true';
@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
         emptyOutDir: true,
         rollupOptions: {
           input: {
-            main: resolve(__dirname, 'examples/media-gallery/index.html'),
+            main: resolve(__dirname, 'examples/media-gallery/media-gallery.html'),
           },
         },
       },

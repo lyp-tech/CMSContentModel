@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Content model library for Optical CMS using SGDS web components",
-
   "files": [
     "dist"
   ],
@@ -27,7 +26,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@govtechsg/sgds-web-component": "^3.0.5"
+    "@govtechsg/sgds-web-component": "^3.0.5",
+    "@tailwindcss/cli": "^4.1.10",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@tailwindcss/vite": "^4.1.10",
+    "npm": "^11.4.2"
   },
   "devDependencies": {
     "@eslint-community/eslint-utils": "^4.7.0",
@@ -36,12 +39,16 @@
     "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^8.34.0",
     "@typescript-eslint/parser": "^8.34.0",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",
+    "postcss": "^8.5.6",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
+    "tailwindcss": "^4.1.10",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-html": "^3.2.2"
   }
 }

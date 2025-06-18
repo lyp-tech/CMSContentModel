@@ -4,5 +4,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="@govtechsg/sgds-web-component" level="application" />
+    <orderEntry type="library" name="@govtechsg" level="application" />
   </component>
 </module>

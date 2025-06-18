@@ -35,14 +35,13 @@ export class MediaGalleryRenderer {
    */
   render(): void {
     const { container } = this.options;
-    
     // Clear the container
     container.innerHTML = '';
-    
-    // Render the gallery controls
+    // Render controls
     this.renderControls(container);
-    
-    // Render the media items
+    // Remove any previous media-gallery-items (defensive)
+    Array.from(container.querySelectorAll('.media-gallery-items')).forEach(el => el.remove());
+    // Render items
     this.renderMediaItems(container);
   }
 
@@ -59,65 +58,95 @@ export class MediaGalleryRenderer {
     const currentType = (this as any)._currentType || 'all';
     const currentSearch = (this as any)._currentSearch || '';
 
-    // SGDS controls: button group, filter dropdown, search input
-    controls.innerHTML = `
-      <div class="d-flex align-items-center gap-3 flex-wrap">
-        <div class="btn-group" role="group" aria-label="View mode toggle">
-          <button type="button" class="sgds btn btn-outline-primary${this.options.layout === 'grid' ? ' active' : ''}" data-view="grid">
-            <sgds-icon name="grid" class="me-1"></sgds-icon> Grid
-          </button>
-          <button type="button" class="sgds btn btn-outline-primary${this.options.layout === 'list' ? ' active' : ''}" data-view="list">
-            <sgds-icon name="list" class="me-1"></sgds-icon> List
-          </button>
-        </div>
-        <div class="dropdown">
-          <button class="sgds btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            ${currentType === 'all' ? 'All Types' : currentType.charAt(0).toUpperCase() + currentType.slice(1)}
-          </button>
-          <ul class="dropdown-menu">
-            ${allTypes.map(type => `
-              <li><a class="dropdown-item${currentType === type ? ' active' : ''}" href="#" data-type="${type}">${type === 'all' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}</a></li>
-            `).join('')}
-          </ul>
-        </div>
-        <div class="flex-grow-1" style="min-width: 200px; max-width: 320px;">
-          <input type="search" class="sgds form-control" placeholder="Search media..." value="${currentSearch.replace(/"/g, '&quot;')}" id="media-gallery-search" />
-        </div>
-      </div>
-    `;
+    // --- View mode toggle ---
+    const btnGroup = document.createElement('div');
+    btnGroup.className = 'btn-group';
+    btnGroup.setAttribute('role', 'group');
+    btnGroup.setAttribute('aria-label', 'View mode toggle');
 
-    setTimeout(() => {
-      // View mode toggle
-      const btns = controls.querySelectorAll('button[data-view]');
-      btns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const view = (e.currentTarget as HTMLElement).getAttribute('data-view');
-          if (view && view !== this.options.layout) {
-            this.options = { ...this.options, layout: view as 'grid' | 'list' };
-            this.render();
-          }
-        });
-      });
-      // Filter dropdown
-      const typeLinks = controls.querySelectorAll('a[data-type]');
-      typeLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const type = (e.currentTarget as HTMLElement).getAttribute('data-type') || 'all';
-          (this as any)._currentType = type;
-          this.render();
-        });
-      });
-      // Search box
-      const searchInput = controls.querySelector<HTMLInputElement>('#media-gallery-search');
-      if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-          (this as any)._currentSearch = (e.target as HTMLInputElement).value;
-          this.render();
-        });
+    const gridBtn = document.createElement('button');
+    gridBtn.type = 'button';
+    gridBtn.className = `sgds btn btn-outline-primary${this.options.layout === 'grid' ? ' active' : ''}`;
+    gridBtn.setAttribute('data-view', 'grid');
+    gridBtn.innerHTML = '<sgds-icon name="lightbulb" class="me-1"></sgds-icon> Grid';
+    gridBtn.addEventListener('click', () => {
+      if (this.options.layout !== 'grid') {
+        this.options.layout = 'grid';
+        this.render();
       }
-    }, 0);
+    });
 
+    const listBtn = document.createElement('button');
+    listBtn.type = 'button';
+    listBtn.className = `sgds btn btn-outline-primary${this.options.layout === 'list' ? ' active' : ''}`;
+    listBtn.setAttribute('data-view', 'list');
+    listBtn.innerHTML = '<sgds-icon name="list" class="me-1"></sgds-icon> List';
+    listBtn.addEventListener('click', () => {
+      if (this.options.layout !== 'list') {
+        this.options.layout = 'list';
+        this.render();
+      }
+    });
+
+    btnGroup.appendChild(gridBtn);
+    btnGroup.appendChild(listBtn);
+
+    // --- Filter dropdown ---
+    const dropdownDiv = document.createElement('div');
+    dropdownDiv.className = 'dropdown';
+
+    const dropdownBtn = document.createElement('button');
+    dropdownBtn.className = 'sgds btn btn-outline-secondary dropdown-toggle';
+    dropdownBtn.type = 'button';
+    dropdownBtn.setAttribute('data-bs-toggle', 'dropdown');
+    dropdownBtn.setAttribute('aria-expanded', 'false');
+    dropdownBtn.textContent = currentType === 'all' ? 'All Types' : currentType.charAt(0).toUpperCase() + currentType.slice(1);
+
+    const dropdownMenu = document.createElement('ul');
+    dropdownMenu.className = 'dropdown-menu';
+    allTypes.forEach(type => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = `dropdown-item${currentType === type ? ' active' : ''}`;
+      a.href = '#';
+      a.setAttribute('data-type', type);
+      a.textContent = type === 'all' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1);
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        (this as any)._currentType = type;
+        this.render();
+      });
+      li.appendChild(a);
+      dropdownMenu.appendChild(li);
+    });
+    dropdownDiv.appendChild(dropdownBtn);
+    dropdownDiv.appendChild(dropdownMenu);
+
+    // --- Search input ---
+    const searchDiv = document.createElement('div');
+    searchDiv.className = 'flex-grow-1';
+    searchDiv.style.minWidth = '200px';
+    searchDiv.style.maxWidth = '320px';
+    const searchInput = document.createElement('input');
+    searchInput.type = 'search';
+    searchInput.className = 'sgds form-control';
+    searchInput.placeholder = 'Search media...';
+    searchInput.value = currentSearch;
+    searchInput.id = 'media-gallery-search';
+    searchInput.addEventListener('input', (e) => {
+      (this as any)._currentSearch = (e.target as HTMLInputElement).value;
+      this.render();
+    });
+    searchDiv.appendChild(searchInput);
+
+    // --- Controls wrapper ---
+    const controlsWrapper = document.createElement('div');
+    controlsWrapper.className = 'd-flex align-items-center gap-3 flex-wrap';
+    controlsWrapper.appendChild(btnGroup);
+    controlsWrapper.appendChild(dropdownDiv);
+    controlsWrapper.appendChild(searchDiv);
+
+    controls.appendChild(controlsWrapper);
     container.appendChild(controls);
   }
 
@@ -125,6 +154,10 @@ export class MediaGalleryRenderer {
    * Renders the media items in the gallery using SGDS grid or filtered by type and search
    */
   private renderMediaItems(container: HTMLElement): void {
+    // Remove previous gallery items if any (defensive, but should be empty after render())
+    const prev = container.querySelector('.media-gallery-items');
+    if (prev) prev.remove();
+
     const wrapper = document.createElement('div');
     wrapper.className = 'media-gallery-items';
 
@@ -142,20 +175,20 @@ export class MediaGalleryRenderer {
     }
 
     if (itemsToRender.length === 0) {
-      wrapper.innerHTML = `
-        <div class="text-center py-5">
-          <p>No media items found</p>
-        </div>
-      `;
+      wrapper.innerHTML = `<div class="text-center py-5"><p>No media items found</p></div>`;
     } else if (this.options.layout === 'grid') {
-      // SGDS grid layout
+      console.log('Rendering GRID layout');
       wrapper.innerHTML = `
-        <div class="sgds-grid" columns="1 2-md 3-lg" gap="3">
-          ${itemsToRender.map(item => this.renderMediaItem(item).outerHTML).join('')}
+        <div class="sgds-container">
+          <div class="sgds-grid">
+            ${itemsToRender.map(item => `
+              <div class="sgds-col-2 sgds-col-sm-2 sgds-col-md-2 sgds-col-lg-2">${this.renderMediaItem(item).outerHTML}</div>
+            `).join('')}
+          </div>
         </div>
       `;
     } else {
-      // SGDS list mode: vertical stack of sgds-card with spacing
+      console.log('Rendering LIST layout');
       wrapper.innerHTML = `
         <div class="d-flex flex-column gap-3">
           ${itemsToRender.map(item => this.renderMediaItem(item).outerHTML).join('')}
@@ -170,7 +203,7 @@ export class MediaGalleryRenderer {
    */
   private renderMediaItem(item: MediaItem): HTMLElement {
     const card = document.createElement('sgds-card');
-    card.className = 'h-100';
+
 
     // Image or icon slot
     if (item.thumbnailUrl) {

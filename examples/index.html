@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CMS Content Model - Posts Example</title>
 
-  <link rel="icon" href="data:;base64,=">
+  <link href='https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.0.5/themes/day.css' rel='stylesheet' type='text/css' />
+  <link href='global.css' rel='stylesheet' type='text/css' />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.0.5"></script>
+
+  <link rel="icon" href="data:;base64,=">
   <style>
     /* Custom styles that enhance SGDS components */
     body {
       padding: 1rem;
-      max-width: 1200px;
       margin: 0 auto;
     }
     
@@ -36,27 +40,57 @@
     }
     
     /* Add some spacing between sections */
-    sgds-grid {
-      margin-top: 2rem;
+    .sgds-grid {
+      display: grid;
+      gap: var(--sgds-gap-md);
+      grid-template-columns: repeat(4, 1fr);
     }
     
     /* Style for the card links */
-    sgds-link {
+    .sgds-link {
       text-decoration: none;
     }
     
-    sgds-link:hover {
+    .sgds-link:hover {
       text-decoration: underline;
     }
+
+    .grid-item {
+      background-color: var(--sgds-product-primary-600);
+      color: #fff;
+      text-align: center;
+      padding: 16px;
+      border-radius: 4px;
+    }
+
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>CMS Content Model Examples</h1>
-    <ul>
-      <li><a href="./media-gallery/index.html">Media Gallery Example</a></li>
-      <li><a href="./posts/index.html">Posts Example</a></li>
+<body class="bg-gray-50 min-h-screen">
+
+
+  <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-200 mb-8">
+    <div class="max-w-5xl mx-auto flex items-center justify-between px-6 py-4">
+      <h1 class="text-2xl font-bold text-primary">CMS Content Model Examples</h1>
+      <nav>
+        <a href="media-gallery/media-gallery.html" class="text-gray-600 hover:text-primary font-medium transition-colors px-3 py-2 rounded">Media Gallery</a>
+        <a href="posts/posts.html" class="text-gray-600 hover:text-primary font-medium transition-colors px-3 py-2 rounded">Posts</a>
+      </nav>
+    </div>
+  </header>
+  <main class="max-w-5xl mx-auto px-4">
+    <ul class="mb-8">
+      <li><a href="media-gallery/media-gallery.html" class="text-blue-600 hover:underline">Media Gallery Example</a></li>
+      <li><a href="posts/posts.html" class="text-blue-600 hover:underline">Posts Example</a></li>
     </ul>
-  </div>
+    <div class="sgds-container mb-8">
+      <div class="sgds-grid">
+        <div class="sgds-col-2 grid-item">1</div>
+        <div class="sgds-col-2 grid-item">2</div>
+        <div class="sgds-col-2 grid-item">3</div>
+        <div class="sgds-col-2 grid-item">4</div>
+      </div>
+    </div>
+    <h1 class="text-3xl font-bold underline shadow-2xs mb-8">Hello world!</h1>
+  </main>
 </body>
 </html>

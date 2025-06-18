@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Media Gallery Example</title>
+  <link rel="stylesheet" href="../global.css" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .media-gallery {
+      margin-top: 2rem;
+    }
+    /* Add some spacing between sections */
+    .sgds-grid {
+      display: grid;
+      gap: var(--sgds-gap-md);
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .grid-item {
+      background-color: var(--sgds-product-primary-600);
+      color: #fff;
+      text-align: center;
+      padding: 16px;
+      border-radius: 4px;
+    }
+  </style>
+  <script type="module">
+    import { renderPage } from '../shared/layout.js';
+
+    const content = `
+        <div id="media-gallery" class="media-gallery"></div>
+      `;
+
+    document.body.innerHTML = renderPage('Media Gallery Example', content);
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <script type="module" src="./media-gallery.ts"></script>
+</body>
+</html>
