@@ -13,6 +13,7 @@
       scroll-snap-type: x mandatory;
       scrollbar-width: none; /* Firefox */
       -ms-overflow-style: none; /* IE and Edge */
+      position: relative;
     }
 
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -28,6 +29,23 @@
     /* Ensure cards have consistent width */
     #moe-home-page-highlights .flex-shrink-0 {
       scroll-snap-stop: always;
+    }
+
+    /* Hide scrollbar for Firefox */
+    #moe-home-page-highlights {
+      scrollbar-width: none;
+    }
+
+    /* Arrow button hover effects */
+    #moe-home-page-highlights button:hover {
+      background-color: white !important;
+      transform: scale(1.1);
+      transition: all 0.2s ease;
+    }
+
+    /* Ensure proper z-index for arrows */
+    #moe-home-page-highlights .z-10 {
+      z-index: 10;
     }
   </style>
 </head>

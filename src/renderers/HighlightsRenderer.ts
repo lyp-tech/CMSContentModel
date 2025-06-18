@@ -6,10 +6,10 @@ export class HighlightsRenderer {
   constructor(options: HighlightsOptions) {
     this.options = {
       title: 'Highlights',
-      containerClass: 'max-w-7xl mx-auto text-left text-lg',
+      containerClass: 'max-w-6xl mx-auto text-left text-lg',
       titleClass: 'pb-8 pt-12 text-3xl md:text-4xl font-bold text-center',
       cardContainerClass: 'flex gap-8 md:gap-10 min-w-[900px]',
-      cardClass: 'flex-shrink-0 w-72 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all',
+      cardClass: 'flex-shrink-0 w-56 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all', // Changed from w-72 to w-64
       ...options
     };
   }
@@ -47,6 +47,49 @@ export class HighlightsRenderer {
       dot.className = `w-3 h-3 rounded-full ${index === activeIndex ? 'bg-blue-600' : 'bg-gray-300'}`;
       dot.ariaPressed = (index === activeIndex).toString();
     });
+  }
+
+  private navigate(direction: number, cardsContainer: HTMLElement): void {
+    const scrollContainer = cardsContainer.parentElement;
+    if (!scrollContainer) return;
+    
+    const cardWidth = cardsContainer.children[0]?.clientWidth || 0;
+    const scrollAmount = cardWidth * this.calculateVisibleCards() * direction;
+    
+    scrollContainer.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+
+// In HeroRenderer.ts, update the renderNavigationArrows method:
+
+  private renderNavigationArrows(container: HTMLElement, cardsContainer: HTMLElement): void {
+    // Previous button
+    const prevButton = document.createElement('button');
+    prevButton.className = 'absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md z-10 transition-colors hidden md:block';
+    prevButton.setAttribute('aria-label', 'Previous slide');
+    prevButton.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+  `;
+    prevButton.addEventListener('click', () => this.navigate(-1, cardsContainer));
+
+    // Next button
+    const nextButton = document.createElement('button');
+    nextButton.className = 'absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md z-10 transition-colors hidden md:block';
+    nextButton.setAttribute('aria-label', 'Next slide');
+    nextButton.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  `;
+    nextButton.addEventListener('click', () => this.navigate(1, cardsContainer));
+
+    container.style.position = 'relative';
+    container.appendChild(prevButton);
+    container.appendChild(nextButton);
   }
 
   private renderDots(container: HTMLElement, cardsContainer: HTMLElement): void {
@@ -104,10 +147,14 @@ export class HighlightsRenderer {
 
     // Create scrollable container
     const scrollContainer = document.createElement('div');
-    scrollContainer.className = 'overflow-x-auto';
+    scrollContainer.className = 'overflow-x-auto relative';
     
+    // Add navigation arrows
     const cardsContainer = document.createElement('div');
     cardsContainer.className = this.options.cardContainerClass;
+    
+    // Add navigation arrows
+    this.renderNavigationArrows(scrollContainer, cardsContainer);
     cardsContainer.style.scrollSnapType = 'x mandatory';
 
     // Add highlight cards
