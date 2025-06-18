@@ -6,12 +6,84 @@ export class HighlightsRenderer {
   constructor(options: HighlightsOptions) {
     this.options = {
       title: 'Highlights',
-      containerClass: 'max-w-6xl mx-auto text-left',
-      titleClass: 'pb-6 pt-12 text-2xl md:text-3xl font-bold text-center',
-      cardContainerClass: 'flex gap-6 md:gap-8 min-w-[900px]',
-      cardClass: 'flex-shrink-0 w-64 bg-white rounded-lg shadow hover:shadow-lg transition',
+      containerClass: 'max-w-7xl mx-auto text-left text-lg',
+      titleClass: 'pb-8 pt-12 text-3xl md:text-4xl font-bold text-center',
+      cardContainerClass: 'flex gap-8 md:gap-10 min-w-[900px]',
+      cardClass: 'flex-shrink-0 w-72 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all',
       ...options
     };
+  }
+
+  private calculateVisibleCards(): number {
+    // Adjust these breakpoints as needed
+    if (window.innerWidth >= 1024) return 4; // Desktop
+    if (window.innerWidth >= 768) return 3;  // Tablet
+    return 1;                                // Mobile
+  }
+
+  private scrollToCard(index: number, cardsContainer: HTMLElement): void {
+    const card = cardsContainer.children[index] as HTMLElement;
+    if (card) {
+      // Get the scrollable parent (the one with overflow-x-auto)
+      const scrollContainer = cardsContainer.parentElement;
+      if (scrollContainer) {
+        // Calculate the scroll position to center the card
+        const containerWidth = scrollContainer.clientWidth;
+        const cardLeft = card.offsetLeft;
+        const cardWidth = card.clientWidth;
+        const scrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+        
+        scrollContainer.scrollTo({
+          left: scrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }
+
+  private updateActiveDot(activeIndex: number, container: HTMLElement): void {
+    const dots = container.querySelectorAll('button');
+    dots.forEach((dot, index) => {
+      dot.className = `w-3 h-3 rounded-full ${index === activeIndex ? 'bg-blue-600' : 'bg-gray-300'}`;
+      dot.ariaPressed = (index === activeIndex).toString();
+    });
+  }
+
+  private renderDots(container: HTMLElement, cardsContainer: HTMLElement): void {
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'flex justify-center gap-2 mt-6';
+    
+    const cardCount = this.options.items.length;
+    const visibleCards = this.calculateVisibleCards();
+    const dotsCount = Math.ceil(cardCount / Math.max(1, visibleCards));
+    
+    for (let i = 0; i < dotsCount; i++) {
+      const dot = document.createElement('button');
+      dot.className = `w-3 h-3 rounded-full transition-colors ${i === 0 ? 'bg-blue-600' : 'bg-gray-300'}`;
+      dot.ariaLabel = `Go to slide ${i + 1}`;
+      dot.ariaPressed = (i === 0).toString();
+      
+      dot.addEventListener('click', () => {
+        this.scrollToCard(i * visibleCards, cardsContainer);
+        this.updateActiveDot(i, dotsContainer);
+      });
+      
+      dotsContainer.appendChild(dot);
+    }
+    
+    // Handle scroll events to update active dot
+    let scrollTimeout: number;
+    cardsContainer.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = window.setTimeout(() => {
+        const scrollPosition = cardsContainer.scrollLeft;
+        const cardWidth = cardsContainer.children[0]?.clientWidth || 0;
+        const activeIndex = Math.round(scrollPosition / (cardWidth * visibleCards));
+        this.updateActiveDot(activeIndex, dotsContainer);
+      }, 100);
+    });
+    
+    container.appendChild(dotsContainer);
   }
 
   render(): HTMLElement {
@@ -36,14 +108,23 @@ export class HighlightsRenderer {
     
     const cardsContainer = document.createElement('div');
     cardsContainer.className = this.options.cardContainerClass;
+    cardsContainer.style.scrollSnapType = 'x mandatory';
 
     // Add highlight cards
     this.options.items.forEach(item => {
-      cardsContainer.appendChild(this.renderHighlightCard(item));
+      const card = this.renderHighlightCard(item);
+      card.style.scrollSnapAlign = 'start';
+      cardsContainer.appendChild(card);
     });
 
     scrollContainer.appendChild(cardsContainer);
     container.appendChild(scrollContainer);
+    
+    // Add dots navigation if there are enough cards
+    if (this.options.items.length > this.calculateVisibleCards()) {
+      this.renderDots(container, cardsContainer);
+    }
+    
     section.appendChild(container);
 
     return section;
