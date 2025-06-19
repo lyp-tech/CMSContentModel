@@ -24,7 +24,8 @@ export class HeroRenderer {
         searchPlaceholder: options.hero.searchPlaceholder || 'Search...',
         popularSearches: options.hero.popularSearches || [],
         backgroundImage: options.hero.backgroundImage,
-        foregroundImage: options.hero.foregroundImage
+        foregroundImage: options.hero.foregroundImage,
+        foregroundImageSizeClass: options.hero.foregroundImageSizeClass || 'w-3/4 max-w-2xl'
       } : undefined
     };
   }
@@ -62,7 +63,7 @@ export class HeroRenderer {
    */
   private renderHeroSection(): HTMLElement {
     const section = document.createElement('section');
-    section.className = 'relative bg-white overflow-hidden';
+    section.className = 'relative bg-white ';
     section.innerHTML = `
       <div class="px-6 pt-8 md:pt-16 relative z-10">
         <div class="max-w-2xl mx-auto pt-8 relative">
@@ -145,20 +146,20 @@ export class HeroRenderer {
   private renderHeroImages(): string {
     if (!this.options.hero) return '';
     
-    const { backgroundImage, foregroundImage } = this.options.hero;
+    const { backgroundImage, foregroundImage, foregroundImageSizeClass } = this.options.hero;
     return `
       ${foregroundImage ? `
         <img
           src="${foregroundImage}"
           alt=""
-          class="mx-auto mt-12 mb-4 w-3/4 max-w-2xl z-10 relative"
+          class="mx-auto mt-12 mb-4 z-10 relative ${foregroundImageSizeClass}"
         />
       ` : ''}
       ${backgroundImage ? `
         <img
           src="${backgroundImage}"
           alt=""
-          class="absolute top-90 left-0 w-full h-32 md:h-48 object-cover pointer-events-none z-0"
+          class="absolute top-90 left-0 w-full h-32 md:h-48 pointer-events-none z-20"
         />
       ` : ''}
     `;

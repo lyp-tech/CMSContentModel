@@ -48,6 +48,10 @@ export interface HeroSectionOptions {
     /** List of popular search terms */
     popularSearches: string[];
     /** Optional background image URL */
+    /** Optional foreground image URL */
+    foregroundImage?: string;
+    /** Optional CSS classes for the foreground image size (e.g., 'w-3/4 max-w-2xl') */
+    foregroundImageSizeClass?: string;
     backgroundImage?: string;
     /** Optional foreground image URL */
     foregroundImage?: string;

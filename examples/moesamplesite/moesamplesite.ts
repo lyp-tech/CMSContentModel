@@ -6,11 +6,57 @@ import { renderPage } from '../shared/layout.js';
 import { HeroRenderer } from '../../src/renderers/HeroRenderer.js';
 import { PopularLinksRenderer } from '../../src/renderers/PopularLinksRenderer';
 import {HighlightsRenderer} from "../../src/renderers/HighlightsRenderer";
+import {NewsFeedRenderer} from "../../src/renderers/NewsFeedRenderer";
+import {EncouragementCardRenderer} from "../../src/renderers/EncouragementCardRenderer";
+import {HelpSectionRenderer} from "../../src/renderers/HelpSectionRenderer";
+import {SchoolbagFeedRenderer} from "../../src/renderers/SchoolbagFeedRenderer";
 
-function initialize(){
-    initializeHeroExample();
-    initializePopularLinks();
-    initializeHighlights();
+async function fetchPosts(): Promise<any[]> {
+    try {
+        const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+        const response = await fetch(`${CORS_PROXY}https://directus.pizza/items/posts`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        const data = await response.json();
+        return data.data || [];
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        return [];
+    }
+}
+
+async function renderPosts() {
+  const posts = await fetchPosts();
+  const container = document.getElementById('posts-container');
+  
+  if (!container || posts.length === 0) return;
+
+  const highlights = new HighlightsRenderer({
+    title: 'Latest Posts',
+    items: posts.map(post => ({
+      title: post.title,
+      description: post.description,
+      imageUrl: `https://directus.pizza/assets/${post.image}`,
+      url: `https://directus.pizza/posts/${post.slug}`
+    })),
+    cardClass: 'flex-shrink-0 w-80 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all',
+    titleClass: 'text-3xl font-bold text-center mb-8'
+  });
+
+  container.appendChild(highlights.render());
+}
+
+async function initialize(){
+  initializeHeroExample();
+  initializePopularLinks();
+  initializeHighlights();
+  initializeNewsFeed();
+  initializeEncouragementCard();
+  initializeHelpSection();
+  initializeFeed();
+  await renderPosts();
 }
 
 function initializeHeroExample() {
@@ -33,7 +79,8 @@ function initializeHeroExample() {
                 'School terms and holidays'
             ],
             backgroundImage: '../img/curve-header.svg',
-            foregroundImage: '../img/hero-illustration.svg'
+            foregroundImage: '../img/hero-illustration.svg',
+            foregroundImageSizeClass: 'w-full max-w-4xl' // Custom size
         },
         searchPlaceholder: 'Search MOE',
         searchAction: '/search',
@@ -61,7 +108,29 @@ function initializeHeroExample() {
       </main>
     </div>
     <div id="popular-links-container"></div>
-    <div id="highlights-container" class="min-h-screen p-4"></div>
+    <div id="highlights-container"></div>
+    <div id="posts-container" class="py-12"></div>
+    <div class="container max-w-6xl  mx-auto">
+      <div class="grid grid-cols-12 gap-6">
+        <div id="news-feed-container" class="col-span-12 md:col-span-7">
+          <!-- News feed will be rendered here -->
+        </div>
+        <div id="encouragement-card-container" class="col-span-12 md:col-span-5">
+          <!-- Encouragement card will be rendered here -->
+        </div>
+      </div>
+    </div>
+    <div class="container mx-auto">
+    <div id="help-section-container">
+      <!-- Help section will be rendered here -->
+    </div>
+  </div>
+  <div class="container mx-auto">
+    <div id="schoolbag-feed-container">
+      <!-- Schoolbag feed will be rendered here -->
+    </div>
+  </div>
+  </div>
   `;
 
     // Render the page with our content
@@ -71,6 +140,76 @@ function initializeHeroExample() {
     const container = document.getElementById('hero-container');
     if (container) {
         container.insertBefore(hero.render(), container.firstChild);
+    }
+}
+
+function initializeEncouragementCard() {
+    const encouragementCard = new EncouragementCardRenderer({
+        iconUrl: '../img/img_1.png?h=92&w=100',
+        iconAlt: 'Heart icon',
+        heading: 'Words of encouragement',
+        description: 'Inspired by a teacher? Received exemplary service from an MOE staff? Share your experience with us. Our heartfelt thanks to all who have posted yours.',
+        viewLinkText: 'View appreciation notes',
+        viewLinkUrl: '/about-us/compliments',
+        buttonText: 'LEAVE A COMPLIMENT',
+        buttonUrl: 'https://form.gov.sg/67ce47ee1b64d111a4222cfa',
+        // Optional custom classes
+        containerClass: 'col-span-12 mb-8 md:col-span-5 md:px-6',
+        cardClass: 'bg-gray-100 p-6 text-center rounded-lg',
+        headingClass: 'text-2xl font-bold',
+        descriptionClass: 'text-gray-700',
+        viewLinkClass: 'text-blue-600 hover:underline',
+        buttonClass: 'inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded transition-colors duration-200'
+    });
+
+    // Add to DOM
+    const container = document.getElementById('encouragement-card-container');
+    if (container) {
+        container.appendChild(encouragementCard.render());
+    }
+}
+
+function initializeNewsFeed() {
+    const newsFeed = new NewsFeedRenderer({
+        title: 'News',
+        items: [
+            {
+                title: 'Pre-University Seminar 2025 – Re-imagiNATION',
+                url: '/news/press-releases/20250605-pre-university-seminar-2025-re-imagination',
+                category: 'Press Releases',
+                publishedDate: 'Thursday, June 5, 2025',
+                target: '_blank',
+                rel: 'noopener'
+            },
+            {
+                title: "MOE Teachers' Conference and ExCEL Fest 2025",
+                url: '/news/press-releases/20250603-moe-teachers-conference-and-excel-fest-2025',
+                category: 'Press Releases',
+                publishedDate: 'Tuesday, June 3, 2025',
+                target: '_blank',
+                rel: 'noopener'
+            },
+            {
+                title: 'More than 650 Students Showcase News Reporting and Language Skills at Annual Competition',
+                url: '/news/press-releases/20250530-more-than-650-students-showcase-news-reporting-and-language-skills-at-annual-competition',
+                category: 'Press Releases',
+                publishedDate: 'Friday, May 30, 2025',
+                target: '_blank',
+                rel: 'noopener'
+            }
+        ],
+        readMoreUrl: '/search?q=*&fq=content_type_s:(%22news%22)',
+        readMoreClass: 'border-solid border-0 more-news-link',
+        containerClass: 'col-span-12 mb-8 md:col-span-7 md:px-4',
+        titleClass: 'mb-12 text-5xl font-bold',
+        titleTextColor: 'text-blue-600',
+        itemClass: 'block h-full border-b border-gray-200 shadow-none hover:shadow-none hover:bg-gray-100'
+    });
+
+    // Add to DOM
+    const container = document.getElementById('news-feed-container');
+    if (container) {
+        container.appendChild(newsFeed.render());
     }
 }
 
@@ -189,6 +328,34 @@ function initializePopularLinks() {
     }
 }
 
+function initializeHelpSection() {
+    const helpSection = new HelpSectionRenderer({
+        iconUrl: '../img/chat.png',
+        iconAlt: 'Chat and discussion icon',
+        heading: "Can't find what you are looking for?",
+        description: `
+      Try using our <a href="/search" class="text-blue-600 hover:underline">site-wide search</a>,
+      <a href="/" class="text-blue-600 hover:underline clickAJ">Ask MOE chatbot</a>, or
+      <a href="https://www.moe.gov.sg/faq" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
+        Frequently Asked Questions (FAQs)
+      </a>
+      to find answers to your queries.
+    `,
+        buttonText: 'Contact Us',
+        buttonUrl: '/contact-us',
+        // Optional custom classes
+        containerClass: 'w-full mt-8',
+        headingClass: 'text-4xl font-semibold mb-2',
+        descriptionClass: 'text-gray-700',
+        buttonClass: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+    });
+
+    // Add to DOM
+    const container = document.getElementById('help-section-container');
+    if (container) {
+        container.appendChild(helpSection.render());
+    }
+}
 
 function initializeHighlights() {
     const highlights = new HighlightsRenderer({
@@ -230,13 +397,68 @@ function initializeHighlights() {
                 imageUrl: '/-/media/images/highlights/pr-dsa-6may2025.jpg',
                 description: 'DSA for Secondary schools & JCs (2026 intake) opens 7 May 2025. Early admission to ITE starts 20 May 2025, polytechnic early admission from 2 June 2025.'
             }
-        ]
+        ],
+        cardClass: 'flex-shrink-0 w-xs bg-white rounded-lg shadow-lg hover:shadow-xl transition-all',
+        titleClass: 'text-3xl font-bold text-center mb-8'
     });
 
     // Add to DOM
     const container = document.getElementById('highlights-container');
     if (container) {
         container.appendChild(highlights.render());
+    }
+}
+
+function initializeFeed() {
+    {
+
+        const sampleArticles = [
+            {
+                title: 'Why choosing the JC Arts stream was the best decision for me',
+                url: 'https://www.schoolbag.edu.sg/story/why-i-chose-the-jc-arts-stream/',
+                imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/06/En-Xue_Schoolbag-Thumbnail.jpg',
+                date: 'Jun 2025',
+                altText: 'Student sharing JC Arts stream experience'
+            },
+            {
+                title: 'Where sports meets syntax',
+                url: 'https://www.schoolbag.edu.sg/story/where-sports-meets-syntax/',
+                imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/06/Where-sports-meets-syntax_thumbnail-scaled-e1748957710292.jpg',
+                date: 'Jun 2025',
+                altText: 'Sports and coding activities'
+            },
+            {
+                title: 'Wayfinding through the secondary school years',
+                url: 'https://www.schoolbag.edu.sg/story/wayfinding-through-the-secondary-school-years/',
+                imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/05/Hero-image-2.jpg',
+                date: 'May 2025',
+                altText: 'Secondary school students learning'
+            },
+            {
+                title: 'A school and a tech start-up gamify the learning experience to bring sustainability lessons to life for students',
+                url: 'https://www.schoolbag.edu.sg/story/a-school-and-a-tech-start-up-gamify-the-learning-experience-to-bring-sustainability-lessons-to-life-for-students/',
+                imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/05/Hero-image.jpg',
+                date: 'May 2025',
+                altText: 'Students participating in gamified learning'
+            }
+        ];
+
+        const feed = new SchoolbagFeedRenderer({
+            title: 'Schoolbag Stories',
+            articles: sampleArticles,
+            schoolbagUrl: 'https://www.schoolbag.edu.sg/',
+            // Optional custom classes
+            containerClass: 'w-full',
+            gridClass: 'grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 -mt-4',
+            articleClass: 'col-span-1 lg:px-4 mb-4 lg:mb-8',
+            buttonClass: 'inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 transition-colors'
+        });
+
+        // Add to DOM
+        const container = document.getElementById('schoolbag-feed-container');
+        if (container) {
+            container.appendChild(feed.render());
+        }
     }
 }
 

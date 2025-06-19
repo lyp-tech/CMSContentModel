@@ -51,6 +51,12 @@ yarn add @your-org/cms-content-model
 4. Document component usage with JSDoc and examples
 5. No framework-specific code - keep it vanilla JavaScript/TypeScript
 
+### Documentation
+
+- [Component Creation Guide](docs/component-creation-guide.md) - Learn how to create new renderer components
+
+Detailed documentation for the project can be found in the `docs/` directory.
+
 ### Content Model Definition
 
 1. Define clear interfaces for each content type
