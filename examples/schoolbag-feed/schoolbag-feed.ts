@@ -35,37 +35,6 @@ const sampleArticles = [
 // Initialize the feed
 document.addEventListener('DOMContentLoaded', () => {
 
-  const sampleArticles = [
-    {
-      title: 'Why choosing the JC Arts stream was the best decision for me',
-      url: 'https://www.schoolbag.edu.sg/story/why-i-chose-the-jc-arts-stream/',
-      imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/06/En-Xue_Schoolbag-Thumbnail.jpg',
-      date: 'Jun 2025',
-      altText: 'Student sharing JC Arts stream experience'
-    },
-    {
-      title: 'Where sports meets syntax',
-      url: 'https://www.schoolbag.edu.sg/story/where-sports-meets-syntax/',
-      imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/06/Where-sports-meets-syntax_thumbnail-scaled-e1748957710292.jpg',
-      date: 'Jun 2025',
-      altText: 'Sports and coding activities'
-    },
-    {
-      title: 'Wayfinding through the secondary school years',
-      url: 'https://www.schoolbag.edu.sg/story/wayfinding-through-the-secondary-school-years/',
-      imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/05/Hero-image-2.jpg',
-      date: 'May 2025',
-      altText: 'Secondary school students learning'
-    },
-    {
-      title: 'A school and a tech start-up gamify the learning experience to bring sustainability lessons to life for students',
-      url: 'https://www.schoolbag.edu.sg/story/a-school-and-a-tech-start-up-gamify-the-learning-experience-to-bring-sustainability-lessons-to-life-for-students/',
-      imageUrl: 'https://www.schoolbag.edu.sg/wp-content/uploads/2025/05/Hero-image.jpg',
-      date: 'May 2025',
-      altText: 'Students participating in gamified learning'
-    }
-  ];
-
   const feed = new SchoolbagFeedRenderer({
     title: 'Schoolbag Stories',
     articles: sampleArticles,

@@ -1,10 +1,19 @@
-import { SchoolbagFeedOptions, SchoolbagArticle } from '../models/SchoolbagFeedOptions';
+import {SchoolbagFeedOptions, SchoolbagArticle, SchoolbagFeedButtonOptions} from '../models/SchoolbagFeedOptions';
 
 /**
  * Renders a feed of articles from Schoolbag
  */
 export class SchoolbagFeedRenderer {
-  private options: Required<SchoolbagFeedOptions>;
+  private options: {
+    title: string;
+    containerClass: string;
+    gridClass: string;
+    articleClass: string;
+    button: { text: string; url: string; className: string; show: boolean } | SchoolbagFeedButtonOptions;
+    articles: SchoolbagArticle[];
+    schoolbagUrl: string;
+    buttonClass?: string
+  };
 
   constructor(options: SchoolbagFeedOptions) {
     this.options = {
@@ -18,11 +27,7 @@ export class SchoolbagFeedRenderer {
         className: 'inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 transition-colors',
         show: true
       },
-      ...options,
-      // Ensure button configuration is properly merged
-      button: {
-        ...(options.button || {})
-      }
+      ...options
     };
   }
 

@@ -46,4 +46,6 @@ export interface SchoolbagFeedOptions {
   gridClass?: string;
   /** Optional custom class for article cards */
   articleClass?: string;
+  /** Optional custom class for the button */
+  buttonClass?: string;
 }
