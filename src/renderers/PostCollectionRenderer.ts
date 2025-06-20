@@ -45,7 +45,7 @@ export class PostCollectionRenderer {
    * Renders a single post item using SGDS Card component (DOM API version)
    */
   private renderPost(post: Post): HTMLElement {
-    const { showExcerpt, showAuthor, showDate, showTags } = this.options;
+    const { showExcerpt, showAuthor, showTags } = this.options;
     const card = document.createElement('sgds-card');
 
     card.className = 'h-100';

@@ -1,4 +1,5 @@
 import { HeroSectionOptions } from '../models/HeroSectionOptions';
+import { NavigationRenderer } from './NavigationRenderer';
 
 /**
  * Renders a hero section with logo, navigation, search, and highlights.
@@ -35,25 +36,52 @@ export class HeroRenderer {
    * @returns HTMLElement containing the rendered hero section
    */
   render(): HTMLElement {
-    // If hero section is defined, render it
-    /*if (this.options.hero) {
-      return this.renderHeroSection();
-    }*/
+    const section = document.createElement('div');
     
-    // Otherwise, render the default header
-    const section = document.createElement('section');
-    section.className = 'bg-white py-8 px-4 border-b border-gray-200';
-
-    section.innerHTML = this.renderContent();
-
-    // --- View mode toggle ---
-    const btnGroup = document.createElement('div');
-    btnGroup.className = 'btn-group';
-    btnGroup.setAttribute('role', 'group');
-    btnGroup.setAttribute('aria-label', 'View mode toggle');
-
-    section.appendChild(btnGroup);
-    section.appendChild(this.renderHeroSection())
+    // Create a container for logo and navigation
+    const headerContainer = document.createElement('div');
+    headerContainer.className = 'bg-white py-4 border-b border-gray-200';
+    
+    // Create a centered content wrapper
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
+    
+    // Create a flex container for logo and nav
+    const navContainer = document.createElement('div');
+    navContainer.className = 'flex flex-col md:flex-row items-center justify-center gap-8';
+    
+    // Render the logo if URL is provided
+    if (this.options.logoUrl) {
+      const logo = document.createElement('img');
+      logo.src = this.options.logoUrl;
+      logo.alt = this.options.logoAlt || 'Logo';
+      logo.className = 'h-16 w-auto';
+      navContainer.appendChild(logo);
+    }
+    
+    // Render the navigation bar
+    if (this.options.navItems && this.options.navItems.length > 0) {
+      const navRenderer = new NavigationRenderer({
+        items: this.options.navItems,
+        containerClass: '',
+        itemClass: 'mx-2',
+        submenuClass: 'mt-2',
+        submenuItemClass: 'whitespace-nowrap',
+        dropdownPosition: 'center',
+        closeOnClickOutside: true
+      });
+      navContainer.appendChild(navRenderer.render());
+    }
+    
+    contentWrapper.appendChild(navContainer);
+    headerContainer.appendChild(contentWrapper);
+    section.appendChild(headerContainer);
+    
+    // Render the hero section if defined
+    if (this.options.hero) {
+      section.appendChild(this.renderHeroSection());
+    }
+    
     return section;
   }
 
@@ -63,25 +91,51 @@ export class HeroRenderer {
    */
   private renderHeroSection(): HTMLElement {
     const section = document.createElement('section');
-    section.className = 'relative bg-white ';
-    section.innerHTML = `
-      <div class="px-6 pt-8 md:pt-16 relative z-10">
-        <div class="max-w-2xl mx-auto pt-8 relative">
-          <!-- Heading -->
-          <h1 class="text-4xl md:text-5xl font-bold text-gray-800 text-center mb-4">
-            ${this.options.hero?.title || ''}
-          </h1>
-          <!-- Subheading -->
-          <div class="text-center my-6">
-            <p class="text-lg md:text-xl text-gray-600">
-              ${this.options.hero?.subtitle || ''}
-            </p>
-          </div>
-          ${this.renderHeroSearch()}
-        </div>
-      </div>
-      ${this.renderHeroImages()}
-    `;
+    section.className = 'relative bg-white';
+    
+    const container = document.createElement('div');
+    container.className = 'px-6 pt-8 md:pt-16 relative z-10';
+    
+    const content = document.createElement('div');
+    content.className = 'max-w-2xl mx-auto pt-8 relative';
+    
+    // Add title
+    if (this.options.hero?.title) {
+      const title = document.createElement('h1');
+      title.className = 'text-4xl md:text-5xl font-bold text-gray-800 text-center mb-4';
+      title.textContent = this.options.hero.title;
+      content.appendChild(title);
+    }
+    
+    // Add subtitle
+    if (this.options.hero?.subtitle) {
+      const subtitleContainer = document.createElement('div');
+      subtitleContainer.className = 'text-center my-6';
+      
+      const subtitle = document.createElement('p');
+      subtitle.className = 'text-lg md:text-xl text-gray-600';
+      subtitle.textContent = this.options.hero.subtitle;
+      
+      subtitleContainer.appendChild(subtitle);
+      content.appendChild(subtitleContainer);
+    }
+    
+    // Add search if enabled
+    if (this.options.hero?.searchPlaceholder) {
+      content.appendChild(this.renderHeroSearch());
+    }
+    
+    container.appendChild(content);
+    section.appendChild(container);
+    
+    // Add hero images if defined
+    if (this.options.hero?.backgroundImage || this.options.hero?.foregroundImage) {
+      const images = this.renderHeroImages();
+      if (images) {
+        section.insertAdjacentHTML('beforeend',images);
+      }
+    }
+    
     return section;
   }
 
@@ -89,35 +143,74 @@ export class HeroRenderer {
    * Renders the search bar for the hero section
    * @private
    */
-  private renderHeroSearch(): string {
-    if (!this.options.hero) return '';
+  private renderHeroSearch(): HTMLElement {
+    if (!this.options.hero) return document.createElement('div');
     
-    return `
-      <div class="bg-white px-6 py-4 rounded-lg shadow-md relative z-10">
-        <form class="flex flex-col md:flex-row items-center gap-4" role="search" aria-label="Site Search">
-          <label for="moe-search-input" class="sr-only">Search</label>
-          <input
-            type="text"
-            id="moe-search-input"
-            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
-            placeholder="${this.options.hero.searchPlaceholder}"
-            autocomplete="off"
-          />
-          <button
-            type="submit"
-            aria-label="Search"
-            class="flex items-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-blue-800 transition"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Search
-          </button>
-        </form>
-        ${this.renderPopularSearches()}
-      </div>
-    `;
+    const searchDiv = document.createElement('div');
+    searchDiv.className = 'bg-white px-6 py-4 rounded-lg shadow-md relative z-10';
+    
+    const form = document.createElement('form');
+    form.className = 'flex flex-col md:flex-row items-center gap-4';
+    form.setAttribute('role', 'search');
+    form.setAttribute('aria-label', 'Site Search');
+    
+    const label = document.createElement('label');
+    label.setAttribute('for', 'moe-search-input');
+    label.className = 'sr-only';
+    label.textContent = 'Search';
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'moe-search-input';
+    input.className = 'flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200';
+    input.placeholder = this.options.hero.searchPlaceholder;
+    input.autocomplete = 'off';
+    
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.className = 'flex items-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-blue-800 transition';
+    button.setAttribute('aria-label', 'Search');
+    
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', '11');
+    circle.setAttribute('cy', '11');
+    circle.setAttribute('r', '8');
+    circle.setAttribute('stroke', 'currentColor');
+    circle.setAttribute('stroke-width', '2');
+    
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', '21');
+    line.setAttribute('y1', '21');
+    line.setAttribute('x2', '16.65');
+    line.setAttribute('y2', '16.65');
+    line.setAttribute('stroke', 'currentColor');
+    line.setAttribute('stroke-width', '2');
+    line.setAttribute('stroke-linecap', 'round');
+    
+    svg.appendChild(circle);
+    svg.appendChild(line);
+    
+    button.appendChild(svg);
+    button.appendChild(document.createTextNode('Search'));
+    
+    form.appendChild(label);
+    form.appendChild(input);
+    form.appendChild(button);
+    
+    searchDiv.appendChild(form);
+    
+    const popularSearches = this.renderPopularSearches();
+    if (popularSearches) {
+      searchDiv.insertAdjacentHTML('beforeend', popularSearches);
+    }
+    
+    return searchDiv;
   }
 
   /**
@@ -163,113 +256,5 @@ export class HeroRenderer {
         />
       ` : ''}
     `;
-  }
-
-  /**
-   * Renders the inner content of the hero section
-   * @private
-   */
-  private renderContent(): string {
-    return `
-      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        ${this.renderLogoAndNav()}
-        ${this.renderSearch()}
-        ${this.renderHighlights()}
-      </div>
-    `;
-  }
-
-  /**
-   * Renders the logo and navigation section
-   * @private
-   */
-  private renderLogoAndNav(): string {
-    return `
-      <div class="flex flex-col md:flex-row items-center gap-8 w-full md:w-auto">
-        <img 
-          src="${this.options.logoUrl}" 
-          alt="${this.options.logoAlt}" 
-          class="h-16 w-auto mb-4 md:mb-0"
-        >
-        <nav class="flex gap-4 text-blue-900 font-semibold text-lg">
-          ${this.options.navItems.map(item => `
-            <a 
-              href="${item.url}" 
-              class="hover:underline"
-            >${item.text}</a>
-          `).join('')}
-        </nav>
-      </div>
-    `;
-  }
-
-  /**
-   * Renders the search form
-   * @private
-   */
-  private renderSearch(): string {
-    return `
-      <form 
-        class="flex w-full md:w-1/3" 
-        role="search" 
-        aria-label="Site Search"
-        action="${this.options.searchAction}"
-        method="get"
-      >
-        <input
-          type="search"
-          placeholder="${this.options.searchPlaceholder}"
-          class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
-          name="q"
-          aria-label="Search input"
-        />
-        <button
-          type="submit"
-          class="bg-blue-700 text-white px-4 py-2 rounded-r-lg hover:bg-blue-800 transition"
-          aria-label="Submit search"
-        >
-          Search
-        </button>
-      </form>
-    `;
-  }
-
-  /**
-   * Renders the highlights panel if any highlights are provided
-   * @private
-   */
-  private renderHighlights(): string {
-    if (!this.options.highlights?.length) return '';
-
-    return `
-      <div class="hidden md:flex flex-col items-end gap-2 w-72">
-        ${this.options.highlights.map(highlight => `
-          <div class="${this.getHighlightClass(highlight.type)} px-4 py-2 rounded font-medium text-sm">
-            <span>${highlight.text}</span>
-            ${highlight.link ? `
-              <a 
-                href="${highlight.link.url}" 
-                class="underline text-blue-700 ml-1"
-              >${highlight.link.text}</a>
-            ` : ''}
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  /**
-   * Returns the appropriate CSS classes for a highlight based on its type
-   * @param type The type of highlight
-   * @private
-   */
-  private getHighlightClass(type: string): string {
-    const classes = {
-      info: 'bg-blue-50 text-blue-900',
-      warning: 'bg-yellow-100 text-yellow-900',
-      success: 'bg-green-50 text-green-900',
-      error: 'bg-red-50 text-red-900'
-    };
-    return classes[type as keyof typeof classes] || classes.info;
   }
 }
