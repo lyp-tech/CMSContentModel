@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation Component Example</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    h1 {
+      margin-top: 2rem;
+    }
+    
+    /* Style the navigation component */
+    moe-navigation {
+      --nav-bg: #f8f9fa;
+      --nav-text: #212529;
+      --nav-hover: #e9ecef;
+      --nav-active: #dee2e6;
+      --nav-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Style the demo content */
+    .demo-section {
+      margin: 2rem 0;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Navigation Component Example</h1>
+    
+    <div class="demo-section">
+      <h2>Basic Navigation</h2>
+      <moe-navigation dropdown-position="left">
+        <script type="application/json">
+          [
+            {
+              "text": "Home",
+              "url": "/"
+            },
+            {
+              "text": "Products",
+              "url": "#",
+              "subItems": [
+                { "text": "Category 1", "url": "/products/category1" },
+                { "text": "Category 2", "url": "/products/category2" },
+                { "text": "Category 3", "url": "/products/category3" }
+              ]
+            },
+            {
+              "text": "Services",
+              "url": "#",
+              "subItems": [
+                { "text": "Service 1", "url": "/services/service1" },
+                { "text": "Service 2", "url": "/services/service2" }
+              ]
+            },
+            {
+              "text": "About",
+              "url": "/about"
+            },
+            {
+              "text": "Contact",
+              "url": "/contact"
+            }
+          ]
+        </script>
+      </moe-navigation>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Centered Dropdown</h2>
+      <moe-navigation dropdown-position="center">
+        <script type="application/json">
+          [
+            {
+              "text": "Home",
+              "url": "/"
+            },
+            {
+              "text": "Categories",
+              "url": "#",
+              "subItems": [
+                { "text": "Electronics", "url": "/electronics" },
+                { "text": "Clothing", "url": "/clothing" },
+                { "text": "Books", "url": "/books" }
+              ]
+            },
+            {
+              "text": "Account",
+              "url": "/account"
+            }
+          ]
+        </script>
+      </moe-navigation>
+    </div>
+  </div>
+
+  <!-- Import the navigation component -->
+  <script type="module" src="../src/components/Navigation.js"></script>
+</body>
+</html>
