@@ -91,6 +91,29 @@
       </div>
     </div>
     <h1 class="text-3xl font-bold underline shadow-2xs mb-8">Hello world!</h1>
+    <script type="module">
+      import "../src/components/Navigation.js"
+    </script>
+    <moe-navigation>
+      <script type="application/json">
+        {
+          "items": [
+            {
+              "text": "Home",
+              "url": "/",
+              "subItems": [
+                { "text": "Submenu Item 1", "url": "/submenu-1" },
+                { "text": "Submenu Item 2", "url": "/submenu-2" }
+              ]
+            },
+            {
+              "text": "Simple Link",
+              "url": "/simple-link"
+            }
+          ]
+        }
+      </script>
+    </moe-navigation>
   </main>
 </body>
 </html>

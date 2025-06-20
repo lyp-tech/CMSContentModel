@@ -1,6 +1,7 @@
 // Import SGDS Web Components (this will register them globally)
 import '@govtechsg/sgds-web-component';
 import '@govtechsg/sgds-web-component/themes/root.css';
+import '../../src/components/Navigation';
 
 import { renderPage } from '../shared/layout.js';
 import { HeroRenderer } from '../../src/renderers/HeroRenderer.js';
@@ -64,9 +65,60 @@ function initializeHeroExample() {
         logoUrl: '../img/img.png',
         logoAlt: 'MOE Logo',
         navItems: [
-            { text: 'Academic calendar', url: '/academic-calendar' },
-            { text: 'Admissions', url: '/admissions' },
-            { text: 'Careers', url: '/careers' }
+            {
+                text: 'Education levels',
+                url: '#',
+                subItems: [
+                    { text: 'Preschool', url: '/preschool' },
+                    { text: 'Primary', url: '/primary' },
+                    { text: 'Secondary', url: '/secondary' },
+                    { text: 'Post-secondary', url: '/post-secondary' }
+                ]
+            },
+            {
+                text: 'Financial matters',
+                url: '/financial-matters',
+                subItems: [
+                    { text: 'Awards and scholarships', url: '/financial-matters/awards-scholarships' },
+                    { text: 'Edusave Account', url: '/financial-matters/edusave-account' },
+                    { text: 'School fees', url: '/financial-matters/fees' },
+                    { text: 'Financial assistance', url: '/financial-matters/financial-assistance' },
+                    { text: 'Loan schemes', url: '/financial-matters/government-loan-schemes' },
+                    { text: 'Post-Secondary Education Account', url: '/financial-matters/psea' },
+                    { text: 'Tuition Grant Scheme', url: '/financial-matters/tuition-grant-scheme' }
+                ]
+            },
+            {
+                text: 'Education in SG',
+                url: '/education-in-sg',
+                subItems: [
+                    { text: '21st Century Competencies', url: '/education-in-sg/21st-century-competencies' },
+                    { text: 'Compulsory education', url: '/primary/compulsory-education' },
+                    { text: 'Desired Outcomes of Education', url: '/education-in-sg/desired-outcomes' },
+                    { text: 'Educational technology journey', url: '/education-in-sg/educational-technology-journey' },
+                    { text: 'Our programmes', url: '/education-in-sg/our-programmes' },
+                    { text: 'Our students', url: '/education-in-sg/our-students' },
+                    { text: 'Our teachers', url: '/education-in-sg/our-teachers' },
+                    { text: 'Our schools', url: '/education-in-sg/our-schools' },
+                    { text: 'Private education', url: '/private-education' }
+                ]
+            },
+            {
+                text: 'Newsroom',
+                url: '/newsroom',
+                subItems: [
+                    { text: 'EdTalks', url: '/newsroom/edtalks' },
+                    { text: 'News', url: '/search?q=*&app=site_search&fq=content_type_s%3A(%22news%22)&sort=modified_dt%20desc' }
+                ]
+            },
+            {
+                text: 'Careers',
+                url: '/careers'
+            },
+            {
+                text: 'About MOE',
+                url: '/about-us'
+            }
         ],
         hero: {
             title: 'Ministry of Education',
@@ -134,7 +186,7 @@ function initializeHeroExample() {
   `;
 
     // Render the page with our content
-    document.body.innerHTML = renderPage('MOE Site Example', content);
+    document.body.innerHTML += renderPage('MOE Site Example', content);
 
     // Add the hero section to the container
     const container = document.getElementById('hero-container');
