@@ -22,7 +22,7 @@ import { NavigationItem } from '../models/NavigationOptions';
  * </moe-navigation>
  * ```
  */
-export class MoeNavigation extends HTMLElement {
+export class NavigationBar extends HTMLElement {
   private items: NavigationItem[] = [];
 
   constructor() {
@@ -69,38 +69,91 @@ export class MoeNavigation extends HTMLElement {
    * Renders the navigation component
    */
   private render(): void {
+    if (!this.shadowRoot) return;
+    
+    // Parse the navigation items from the script tag
     this.parseItems();
 
     const dropdownPosition = this.getAttribute('dropdown-position') || 'left';
     const itemClass = this.getAttribute('item-class') || '';
     const submenuClass = this.getAttribute('submenu-class') || '';
     const submenuItemClass = this.getAttribute('submenu-item-class') || '';
-    
-    this.shadowRoot!.innerHTML = `
+    const logoUrl = this.getAttribute('logo-url') || '';
+    const logoAlt = this.getAttribute('logo-alt') || 'Logo';
+    const logoClass = this.getAttribute('logo-class') || '';
+    const logoLinkUrl = this.getAttribute('logo-link-url') || '/';
+    const logoWidth = this.getAttribute('logo-width') || 'auto';
+    const logoHeight = this.getAttribute('logo-height') || '4rem';
+    const logoMaxWidth = this.getAttribute('logo-max-width') || 'none';
+
+    this.shadowRoot.innerHTML = `
       <style>
         :host {
           display: block;
-          font-family: system-ui, -apple-system, sans-serif;
+          width: 100%;
         }
         
         .navigation-container {
           display: flex;
           flex-direction: column;
-          height: 100%;
+          align-items: center;
+          background-color: white;
+          padding: 1rem;
+          width: 100%;
         }
         
-        .navigation-wrapper {
-          flex-grow: 1;
+        @media (min-width: 768px) {
+          .navigation-container {
+            flex-direction: row;
+            justify-content: space-evenly;
+            padding: 0.5rem 2rem;
+          }
+        }
+
+        .logo-container {
           display: flex;
-          align-items: flex-end;
+          align-items: center;
+          margin-bottom: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+          .logo-container {
+            margin-bottom: 0;
+            margin-right: 2rem;
+          }
+        }
+
+        .logo-link {
+          display: flex;
+          align-items: center;
+          height: 100%;
+        }
+
+        .logo-img {
+          width: ${logoWidth};
+          height: ${logoHeight};
+          max-width: ${logoMaxWidth};
+          object-fit: contain;
+          display: block;
         }
         
         .navigation-list {
           display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
           list-style: none;
           margin: 0;
           padding: 0;
-          height: 100%;
+          width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+          .navigation-list {
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+            width: auto;
+          }
         }
         
         .navigation-item {
@@ -180,18 +233,23 @@ export class MoeNavigation extends HTMLElement {
         }
       </style>
       
-      <div class="navigation-container">
-        <div class="navigation-wrapper">
-          <ul class="navigation-list">
-            ${this.items.map((item, index) => this.renderNavigationItem(item, index, {
-              dropdownPosition,
-              itemClass,
-              submenuClass,
-              submenuItemClass
-            })).join('')}
-          </ul>
-        </div>
-      </div>
+      <nav class="navigation-container" >
+        ${logoUrl ? `
+          <div class="logo-container">
+            <a href="${logoLinkUrl}" class="logo-link">
+              <img src="${logoUrl}" alt="${logoAlt}" class="logo-img ${logoClass}">
+            </a>
+          </div>
+        ` : ''}
+        <ul class="navigation-list">
+          ${this.items.map((item, index) => this.renderNavigationItem(item, index, {
+            dropdownPosition,
+            itemClass,
+            submenuClass,
+            submenuItemClass
+          })).join('')}
+        </ul>
+      </nav>
     `;
   }
   
@@ -373,8 +431,8 @@ export class MoeNavigation extends HTMLElement {
 }
 
 // Register the custom element
-if (!customElements.get('moe-navigation')) {
-  customElements.define('moe-navigation', MoeNavigation);
+if (!customElements.get('navigation-bar')) {
+  customElements.define('navigation-bar', NavigationBar);
 }
 
-export default MoeNavigation;
+export default NavigationBar;

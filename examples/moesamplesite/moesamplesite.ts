@@ -1,7 +1,7 @@
 // Import SGDS Web Components (this will register them globally)
 import '@govtechsg/sgds-web-component';
 import '@govtechsg/sgds-web-component/themes/root.css';
-import '../../src/components/Navigation';
+
 
 import { renderPage } from '../shared/layout.js';
 import { HeroRenderer } from '../../src/renderers/HeroRenderer.js';
@@ -186,7 +186,7 @@ function initializeHeroExample() {
   `;
 
     // Render the page with our content
-    document.body.innerHTML += renderPage('MOE Site Example', content);
+    document.body.innerHTML = renderPage('MOE Site Example', document.body.innerHTML + content);
 
     // Add the hero section to the container
     const container = document.getElementById('hero-container');

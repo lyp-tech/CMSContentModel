@@ -1,5 +1,4 @@
 import { HeroSectionOptions } from '../models/HeroSectionOptions';
-import { NavigationRenderer } from './NavigationRenderer';
 
 /**
  * Renders a hero section with logo, navigation, search, and highlights.
@@ -37,43 +36,15 @@ export class HeroRenderer {
    */
   render(): HTMLElement {
     const section = document.createElement('div');
-    
+
     // Create a container for logo and navigation
     const headerContainer = document.createElement('div');
     headerContainer.className = 'bg-white py-4 border-b border-gray-200';
-    
+
     // Create a centered content wrapper
     const contentWrapper = document.createElement('div');
     contentWrapper.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
-    
-    // Create a flex container for logo and nav
-    const navContainer = document.createElement('div');
-    navContainer.className = 'flex flex-col md:flex-row items-center justify-center gap-8';
-    
-    // Render the logo if URL is provided
-    if (this.options.logoUrl) {
-      const logo = document.createElement('img');
-      logo.src = this.options.logoUrl;
-      logo.alt = this.options.logoAlt || 'Logo';
-      logo.className = 'h-16 w-auto';
-      navContainer.appendChild(logo);
-    }
-    
-    // Render the navigation bar
-    if (this.options.navItems && this.options.navItems.length > 0) {
-      const navRenderer = new NavigationRenderer({
-        items: this.options.navItems,
-        containerClass: '',
-        itemClass: 'mx-2',
-        submenuClass: 'mt-2',
-        submenuItemClass: 'whitespace-nowrap',
-        dropdownPosition: 'center',
-        closeOnClickOutside: true
-      });
-      navContainer.appendChild(navRenderer.render());
-    }
-    
-    contentWrapper.appendChild(navContainer);
+
     headerContainer.appendChild(contentWrapper);
     section.appendChild(headerContainer);
     

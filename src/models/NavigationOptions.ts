@@ -38,4 +38,18 @@ export interface NavigationOptions {
   dropdownPosition?: 'left' | 'center' | 'right';
   /** Whether to close dropdowns when clicking outside (default: true) */
   closeOnClickOutside?: boolean;
+  /** URL of the logo image */
+  logoUrl?: string;
+  /** Alt text for the logo image */
+  logoAlt?: string;
+  /** Additional CSS class for the logo container */
+  logoClass?: string;
+  /** URL to navigate when logo is clicked (default: '/') */
+  logoLinkUrl?: string;
+  /** Width of the logo (e.g., '100px', '2rem', 'auto') */
+  logoWidth?: string;
+  /** Height of the logo (e.g., '50px', '3rem', 'auto') */
+  logoHeight?: string;
+  /** Maximum width of the logo (e.g., '200px', '100%') */
+  logoMaxWidth?: string;
 }

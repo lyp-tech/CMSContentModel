@@ -50,7 +50,13 @@
   </style>
 </head>
 <body>
-  <moe-navigation dropdown-position="center">
+  <navigation-bar
+          logo-url="../img/img.png"
+          logo-alt="Company Logo"
+          logo-class="custom-logo"
+          logo-link-url="/home"
+          dropdown-position="center"
+          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <script type="application/json">
         [
           {
@@ -109,10 +115,116 @@
           }
         ]
     </script>
-  </moe-navigation>
-
+  </navigation-bar>
+  <highlights-carousel
+          title="Featured Content"
+          container-class="mx-auto"
+          title-class="text-2xl font-bold text-center my-8"
+          card-class="w-64 bg-white rounded-lg shadow-md hover:shadow-lg transition-all"
+          card-container-class="gap-6 px-4"
+          class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"
+  >
+    <script type="application/json">
+      [
+        {
+          "title": "Getting Started Guide",
+          "description": "Learn how to get started with our platform in just a few easy steps.",
+          "url": "/guides/getting-started",
+          "imageUrl": "/images/guide-1.jpg"
+        },
+        {
+          "title": "API Reference",
+          "description": "Comprehensive documentation for all available API endpoints.",
+          "url": "/docs/api",
+          "imageUrl": "/images/api-docs.jpg"
+        },
+        {
+          "title": "Tutorials",
+          "description": "Step-by-step tutorials to help you build amazing applications.",
+          "url": "/tutorials",
+          "imageUrl": "/images/tutorials.jpg"
+        },
+        {
+          "title": "Community Forum",
+          "description": "Join our community to ask questions and share knowledge.",
+          "url": "/community",
+          "imageUrl": "/images/community.jpg"
+        },
+        {
+          "title": "Community Forum",
+          "description": "Join our community to ask questions and share knowledge.",
+          "url": "/community",
+          "imageUrl": "/images/community.jpg"
+        },
+        {
+          "title": "Community Forum",
+          "description": "Join our community to ask questions and share knowledge.",
+          "url": "/community",
+          "imageUrl": "/images/community.jpg"
+        },
+        {
+          "title": "Community Forum",
+          "description": "Join our community to ask questions and share knowledge.",
+          "url": "/community",
+          "imageUrl": "/images/community.jpg"
+        },
+        {
+          "title": "Community Forum",
+          "description": "Join our community to ask questions and share knowledge.",
+          "url": "/community",
+          "imageUrl": "/images/community.jpg"
+        },
+        {
+          "title": "Community Forum",
+          "description": "Join our community to ask questions and share knowledge.",
+          "url": "/community",
+          "imageUrl": "/images/community.jpg"
+        },
+        {
+          "title": "Community Forum",
+          "description": "Join our community to ask questions and share knowledge.",
+          "url": "/community",
+          "imageUrl": "/images/community.jpg"
+        }
+      ]
+    </script>
+  </highlights-carousel>
+  <div id="popular-links-container">
+    <popular-links
+            container-class="max-w-6xl mx-auto px-4 py-12"
+            section-class="flex-1 min-w-[240px] bg-white rounded-lg shadow-lg p-8 flex flex-col items-start text-lg"
+            title-class="text-2xl font-semibold mb-4 block"
+            link-class="text-blue-700 hover:text-blue-800 hover:underline"
+    >
+      <script type="application/json">
+        [
+          {
+            "id": "academic-calendar",
+            "title": "Academic calendar",
+            "icon": "calendar",
+            "links": [
+              { "text": "Calendar", "url": "/calendar" },
+              { "text": "National examinations dates", "url": "/national-exams-dates" }
+            ]
+          },
+          {
+            "id": "admissions",
+            "title": "Admissions",
+            "icon": "file",
+            "links": [
+              { "text": "Joint Admissions Exercise (JAE)", "url": "/post-secondary/admissions/jae" },
+              { "text": "MOE Kindergarten registration", "url": "https://www.moe.gov.sg/preschool/moe-kindergarten/register", "target": "_blank", "rel": "noopener" },
+              { "text": "Primary 1 registration", "url": "https://www.moe.gov.sg/primary/p1-registration", "target": "_blank", "rel": "noopener" }
+            ]
+          }
+        ]
+      </script>
+    </popular-links>
+  </div>
   <script type="module" src="moesamplesite.ts"></script>
   <!-- Import the navigation component -->
   <script type="module" src="../../src/components/Navigation.js"></script>
+  <script type="module" src="../../src/components/Highlights.js"></script>
+  <script type="module" src="../../src/components/PopularLinks.js"></script>
 </body>
 </html>
