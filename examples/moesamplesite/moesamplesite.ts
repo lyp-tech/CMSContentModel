@@ -49,15 +49,27 @@ async function renderPosts() {
   container.appendChild(highlights.render());
 }
 
+async function initializeSearch() {
+  const searchElement = document.querySelector('moe-search');
+  if (searchElement) {
+    searchElement.addEventListener('search', (e: Event) => {
+      const event = e as CustomEvent;
+      console.log('Search submitted:', event.detail.query);
+      // Here you would typically handle the search, e.g., navigate to search results
+    });
+  }
+}
+
 async function initialize(){
   initializeHeroExample();
-  initializePopularLinks();
+  //initializePopularLinks();
   initializeHighlights();
   initializeNewsFeed();
   initializeEncouragementCard();
   initializeHelpSection();
-  initializeFeed();
-  await renderPosts();
+  initializeSearch();
+  // initializeFeed();
+  // renderPosts();
 }
 
 function initializeHeroExample() {

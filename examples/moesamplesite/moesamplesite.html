@@ -116,6 +116,76 @@
         ]
     </script>
   </navigation-bar>
+  <!-- Search Component -->
+  <section class="py-12 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <moe-search
+        header="Ministry of Education"
+        description="Moulding the future of our nation."
+        placeholder="What are you looking for?"
+        action="/search"
+        popular-searches="Education,Admissions,Scholarships,Calendar"
+      ></moe-search>
+    </div>
+  </section>
+  <!-- Hero Section -->
+  <moe-hero
+          background-image="../img/curve-header.svg"
+          foreground-image="../img/hero-illustration.svg"
+          foreground-size="w-1/2 max-w-2xl"
+          image-offset="-5rem"
+  ></moe-hero>
+  <div id="popular-links-container">
+    <popular-links
+            container-class="max-w-6xl mx-auto px-4 py-12"
+            section-class="flex-1 min-w-[240px] bg-white rounded-lg shadow-lg p-8 flex flex-col items-start text-lg"
+            title-class="text-2xl font-semibold mb-4 block"
+            link-class="text-blue-700 hover:text-blue-800 hover:underline"
+    >
+      <script type="application/json">
+        [
+          {
+            "id": "academic-calendar",
+            "title": "Academic calendar",
+            "icon": "calendar",
+            "links": [
+              { "text": "Calendar", "url": "/calendar" },
+              { "text": "National examinations dates", "url": "/national-exams-dates" }
+            ]
+          },
+          {
+            "id": "admissions",
+            "title": "Admissions",
+            "icon": "file",
+            "links": [
+              { "text": "Joint Admissions Exercise (JAE)", "url": "/post-secondary/admissions/jae" },
+              { "text": "MOE Kindergarten registration", "url": "https://www.moe.gov.sg/preschool/moe-kindergarten/register", "target": "_blank", "rel": "noopener" },
+              { "text": "Primary 1 registration", "url": "https://www.moe.gov.sg/primary/p1-registration", "target": "_blank", "rel": "noopener" }
+            ]
+          },
+          {
+            "id": "academic-calendar",
+            "title": "Academic calendar",
+            "icon": "calendar",
+            "links": [
+              { "text": "Calendar", "url": "/calendar" },
+              { "text": "National examinations dates", "url": "/national-exams-dates" }
+            ]
+          },
+          {
+            "id": "admissions",
+            "title": "Admissions",
+            "icon": "file",
+            "links": [
+              { "text": "Joint Admissions Exercise (JAE)", "url": "/post-secondary/admissions/jae" },
+              { "text": "MOE Kindergarten registration", "url": "https://www.moe.gov.sg/preschool/moe-kindergarten/register", "target": "_blank", "rel": "noopener" },
+              { "text": "Primary 1 registration", "url": "https://www.moe.gov.sg/primary/p1-registration", "target": "_blank", "rel": "noopener" }
+            ]
+          }
+        ]
+      </script>
+    </popular-links>
+  </div>
   <highlights-carousel
           title="Featured Content"
           container-class="mx-auto"
@@ -189,42 +259,13 @@
       ]
     </script>
   </highlights-carousel>
-  <div id="popular-links-container">
-    <popular-links
-            container-class="max-w-6xl mx-auto px-4 py-12"
-            section-class="flex-1 min-w-[240px] bg-white rounded-lg shadow-lg p-8 flex flex-col items-start text-lg"
-            title-class="text-2xl font-semibold mb-4 block"
-            link-class="text-blue-700 hover:text-blue-800 hover:underline"
-    >
-      <script type="application/json">
-        [
-          {
-            "id": "academic-calendar",
-            "title": "Academic calendar",
-            "icon": "calendar",
-            "links": [
-              { "text": "Calendar", "url": "/calendar" },
-              { "text": "National examinations dates", "url": "/national-exams-dates" }
-            ]
-          },
-          {
-            "id": "admissions",
-            "title": "Admissions",
-            "icon": "file",
-            "links": [
-              { "text": "Joint Admissions Exercise (JAE)", "url": "/post-secondary/admissions/jae" },
-              { "text": "MOE Kindergarten registration", "url": "https://www.moe.gov.sg/preschool/moe-kindergarten/register", "target": "_blank", "rel": "noopener" },
-              { "text": "Primary 1 registration", "url": "https://www.moe.gov.sg/primary/p1-registration", "target": "_blank", "rel": "noopener" }
-            ]
-          }
-        ]
-      </script>
-    </popular-links>
-  </div>
   <script type="module" src="moesamplesite.ts"></script>
+  <!-- Import the search component -->
+  <script type="module" src="../../src/components/Search.js"></script>
   <!-- Import the navigation component -->
   <script type="module" src="../../src/components/Navigation.js"></script>
   <script type="module" src="../../src/components/Highlights.js"></script>
   <script type="module" src="../../src/components/PopularLinks.js"></script>
+  <script type="module" src="../../src/components/Hero.js"></script>
 </body>
 </html>

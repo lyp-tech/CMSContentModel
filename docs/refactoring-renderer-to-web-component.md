@@ -151,11 +151,138 @@ if (!customElements.get('navigation-bar')) {
 3. **Data Loading**: Handle async data loading appropriately
 4. **Browser Support**: Test in target browsers
 
+## Framework Usage Guidelines
+
+When refactoring to web components, follow these guidelines to maintain consistency and avoid framework-specific code:
+
+### 4.1 Use Vanilla Web Components
+
+- **Do not** use framework-specific code (e.g., LitElement, Stencil, etc.) in web components
+- Use the standard `CustomElement` API and `ShadowDOM` directly
+- Keep dependencies to a minimum to ensure maximum compatibility
+
+### 4.2 Allowed Dependencies
+
+- `@govtechsg/sgds-web-component` - For SGDS components
+- `@govtechsg/sgds-web-component/themes/root.css` - For SGDS theming
+- TypeScript types (`@types/*`)
+
+### 4.3 Prohibited Dependencies
+
+- UI frameworks (React, Vue, Angular, etc.)
+- Web component libraries (Lit, Stencil, etc.)
+- CSS-in-JS libraries
+- Utility libraries that duplicate browser functionality
+
+### 4.4 Exception Process
+
+If you believe a framework or library is necessary:
+1. Document the justification
+2. Get explicit approval from the architecture review board
+3. Add the dependency to the allowed list in this document
+
 ## Related Files
 
 - `src/components/Navigation.ts` - The refactored web component
 - `src/renderers/NavigationRenderer.ts` - The original renderer (now deprecated)
 - `examples/navigation-example.html` - Example usage
+
+## Lessons Learned: Responsive Design and Styling
+
+### 1. Implementing Responsive Design in Web Components
+
+When creating responsive web components, consider these best practices:
+
+#### Viewport-Based Responsiveness
+- Use `window.innerWidth` for responsive checks instead of container width for initial render
+- Implement a `ResizeObserver` to handle viewport changes
+- Only re-render when the layout actually needs to change
+
+```typescript
+// Example: Responsive check
+private shouldUseMobileLayout(): boolean {
+  return typeof window !== 'undefined' && window.innerWidth < 768;
+}
+
+// Example: Resize observer setup
+private setupResizeObserver() {
+  const checkAndRender = () => {
+    const shouldBeMobile = this.shouldUseMobileLayout();
+    const currentIsMobile = /* check current state */;
+    
+    if (shouldBeMobile !== currentIsMobile) {
+      this.render();
+    }
+  };
+  
+  // Initial check and setup observer
+  checkAndRender();
+  const observer = new ResizeObserver(checkAndRender);
+  observer.observe(document.documentElement);
+  
+  return () => observer.disconnect();
+}
+```
+
+### 2. Integrating Tailwind CSS with Web Components
+
+For web components to work with Tailwind CSS:
+
+#### Light DOM Approach (Recommended for Tailwind)
+- Use Light DOM instead of Shadow DOM to inherit Tailwind styles
+- Override `createRenderRoot()` to return `this`
+- Keep the component in the Light DOM for global style access
+
+```typescript
+export class MyComponent extends HTMLElement {
+  // Use Light DOM for Tailwind CSS compatibility
+  createRenderRoot() {
+    return this;
+  }
+  
+  connectedCallback() {
+    this.render();
+  }
+  
+  private render() {
+    // Use Tailwind classes directly
+    this.innerHTML = `
+      <div class="bg-white p-4 rounded-lg shadow">
+        <!-- Component content -->
+      </div>
+    `;
+  }
+}
+```
+
+#### Shadow DOM Approach (If Needed)
+If you must use Shadow DOM:
+1. Include Tailwind in the shadow root
+2. Use `@apply` in shadow styles
+3. Consider using CSS variables for theming
+
+```typescript
+private render() {
+  if (!this.shadowRoot) return;
+  
+  this.shadowRoot.innerHTML = `
+    <style>
+      :host {
+        /* Include Tailwind */
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+        
+        /* Or use @apply */
+        .custom-button {
+          @apply px-4 py-2 rounded bg-blue-500 text-white;
+        }
+      }
+    </style>
+    <div class="custom-button">Click me</div>
+  `;
+}
+```
 
 ## Next Steps
 

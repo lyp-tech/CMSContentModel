@@ -10,6 +10,8 @@ export class PopularLinks extends HTMLElement {
     linkClass: 'text-blue-700 hover:text-blue-800 hover:underline text-lg',
     sections: []
   };
+  
+  private resizeObserver: ResizeObserver | null = null;
 
   static get observedAttributes() {
     return ['container-class', 'section-class', 'title-class', 'link-class'];
@@ -23,6 +25,13 @@ export class PopularLinks extends HTMLElement {
     this.parseAttributes();
     this.parseSections();
     this.render();
+  }
+  
+  disconnectedCallback() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
   }
   
   // Use Light DOM instead of Shadow DOM for better Tailwind CSS integration
@@ -58,33 +67,129 @@ export class PopularLinks extends HTMLElement {
     }
   }
 
+  private shouldUseAccordion(): boolean {
+    // Use window.innerWidth for the check
+    return typeof window !== 'undefined' && window.innerWidth < 768;
+  }
+
+  private renderAccordion(section: PopularLinksSection): HTMLElement {
+    const accordionItem = document.createElement('sgds-accordion-item');
+    
+    // Create header with icon and title
+    const header = document.createElement('div');
+    header.slot = 'header';
+    header.className = 'flex items-center gap-3';
+    
+    if (section.icon) {
+      const icon = document.createElement('sgds-icon');
+      icon.setAttribute('name', section.icon);
+      icon.setAttribute('size', 'md');
+      icon.classList.add('flex-shrink-0');
+      header.appendChild(icon);
+    }
+    
+    const title = document.createElement('span');
+    title.textContent = section.title;
+    header.appendChild(title);
+    
+    // Create content with links
+    const content = document.createElement('div');
+    content.slot = 'content';
+    content.className = 'pl-9';
+    
+    if (section.links?.length) {
+      const list = document.createElement('ul');
+      list.className = 'space-y-2';
+      
+      section.links.forEach(link => {
+        const item = document.createElement('li');
+        const anchor = document.createElement('a');
+        anchor.href = link.url;
+        anchor.className = this.options.linkClass;
+        anchor.textContent = link.text;
+        
+        if (link.target) anchor.target = link.target;
+        if (link.rel) anchor.rel = link.rel;
+        
+        item.appendChild(anchor);
+        list.appendChild(item);
+      });
+      
+      content.appendChild(list);
+    }
+    
+    accordionItem.appendChild(header);
+    accordionItem.appendChild(content);
+    
+    return accordionItem;
+  }
+
+  private setupResizeObserver(container: HTMLElement) {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    
+    const checkAndRender = () => {
+      const shouldBeAccordion = this.shouldUseAccordion();
+      const currentIsAccordion = !!this.querySelector('sgds-accordion');
+      
+      if (shouldBeAccordion !== currentIsAccordion) {
+        this.render();
+      }
+    };
+    
+    // Initial check
+    checkAndRender();
+    
+    // Setup observer for future changes
+    this.resizeObserver = new ResizeObserver(checkAndRender);
+    this.resizeObserver.observe(container);
+  }
+
   private render() {
     // Clear existing content
     this.innerHTML = '';
 
     // Create section element
     const section = document.createElement('div');
-    section.setAttribute('role', 'section');
     section.className = 'py-8';
     
     // Create container
     const container = document.createElement('div');
     container.className = this.options.containerClass;
     
-    // Create grid
-    const grid = document.createElement('div');
-    grid.className = 'flex flex-col md:flex-row justify-center flex-wrap gap-8';
+    // Check if we should use accordion
+    const useAccordion = this.shouldUseAccordion();
     
-    // Add sections to grid
-    this.options.sections.forEach(sectionData => {
-      grid.appendChild(this.renderSection(sectionData));
-    });
+    if (useAccordion) {
+      // Create accordion
+      const accordion = document.createElement('sgds-accordion');
+      accordion.className = 'w-full';
+      
+      // Add accordion items
+      this.options.sections.forEach(sectionData => {
+        accordion.appendChild(this.renderAccordion(sectionData));
+      });
+      
+      container.appendChild(accordion);
+    } else {
+      // Original grid layout
+      const grid = document.createElement('div');
+      grid.className = 'flex flex-col md:flex-row justify-center flex-wrap gap-8';
+      
+      // Add sections to grid
+      this.options.sections.forEach(sectionData => {
+        grid.appendChild(this.renderSection(sectionData));
+      });
+      
+      container.appendChild(grid);
+    }
     
-    container.appendChild(grid);
     section.appendChild(container);
-    
-    // Append content to the component
     this.appendChild(section);
+    
+    // Set up resize observer
+    this.setupResizeObserver(container);
   }
 
   private renderSection(section: PopularLinksSection): HTMLElement {

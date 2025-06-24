@@ -7,14 +7,14 @@ Organisations migrating from legacy "all-in-one" CMS stacks to a **bespoke front
 
 ## 2. Complexity Overview  
 
-| Tier | Typical Size & Features | Baseline Effort (Traditional) | Key Pain Points |
-|------|-------------------------|------------------------------|-----------------|
-| **Very High** | ≥500 pages, ≥40 core modules, custom platform hooks, multi-step workflows | 60–75 man-months | Heavy bespoke widgets, brittle CSS, multi-role approval chains |
-| **High** | 200–500 pages, 20–40 modules, 3-level mega-nav | 30–40 man-months | Numerous interactive components, deep navigation, performance tuning |
-| **Medium** | 50–200 pages, 10–20 modules, basic search/signup | 15–20 man-months | Mixed static/dynamic layouts, moderate design debt |
-| **Simple** | ≤50 pages, ≤10 modules, static or low interactivity | 5–10 man-months | Mostly templating & CMS mapping |
+| Tier | Typical Size & Features | All-in Effort (Baseline) | **All-in Effort (AI-Assisted)** | Key Pain Points |
+|------|-------------------------|-------------------------------------|-------------------------------|-----------------|
+| **Very High** | ≥500 pages, ≥40 core modules, custom platform hooks, multi-step workflows | 60–75 man-months                    | **44–65 man-months** | Heavy bespoke widgets, brittle CSS, multi-role approval chains |
+| **High** | 200–500 pages, 20–40 modules, 3-level mega-nav | 30–40 man-months                    | **22–33 man-months** | Numerous interactive components, deep navigation, performance tuning |
+| **Medium** | 50–200 pages, 10–20 modules, basic search/signup | 15–20 man-months                    | **11–15 man-months** | Mixed static/dynamic layouts, moderate design debt |
+| **Simple** | ≤50 pages, ≤10 modules, static or low interactivity | 5–10 man-months                     | **3.5–6 man-months** | Mostly templating & CMS mapping |
 
-*(Man-month calculation based on 5-person team: 1 product designer + 3 FE devs + 1 BE dev; content migration excluded)*
+*(Man-month calculation based on 5-person team.  AI-assisted “all-in” figures include content migration, backend/API work and advanced testing as per §3.3.)*
 
 ---
 
@@ -29,18 +29,42 @@ Organisations migrating from legacy "all-in-one" CMS stacks to a **bespoke front
 
 ### 3.2  Effort Comparison (build + unit tests, excl. QA & content)
 
-| Tier | Traditional Hand-Code (Team) | GAI-AD Workflow (Team) | Time-Saving |
-|------|----------------------|-----------------|-------------|
-| Very High | 60–75 man-months | **30–45 man-months** | 40–50% |
-| High | 30–40 man-months | **15–22.5 man-months** | 45–55% |
-| Medium | 15–20 man-months | **7.5–10 man-months** | 50–60% |
-| Simple | 5–10 man-months | **2.5–4 man-months** | 60–65% |
+| Tier | **Traditional Method (Team)** | **AI Assisted Workflow (Team)** | Time-Saving |
+|------|-----------------------------------|---------------------------------|-------------|
+| Very High | 40–52 man-months                  | **22–33 man-months**            | 35–45% |
+| High      | 21–28 man-months                  | **11–16.5 man-months**          | 40–45% |
+| Medium    | 10–14 man-months                  | **5.5–8 man-months**            | 40–45% |
+| Simple    | 3.5–7 man-months                  | **2–3.5 man-months**            | 45–55% |
 
 **Drivers of acceleration**  
 • Automatic boilerplate generation (attribute mapping, Shadow-DOM scaffolding)  
 • Bulk CSS normalisation to Tailwind utilities  
 • Consistent test stub generation  
 • AI-produced migration docs reused by offshore team
+
+### 3.3  Extended Effort (Incl. Content Migration, Backend, Advanced Testing)
+
+The figures in 3.2 cover ONLY pure front-end rebuild work.  When **content migration, headless-CMS/backend work and advanced testing (performance, security, accessibility)** are brought into scope we see an uplift of roughly:
+
+| Scope Area | Typical % Uplift vs FE-only | Rationale |
+|------------|-----------------------------|-----------|
+| Content migration scripts & validation | **+20 %** | Extract, transform & load page / media assets, checksum verification, editor spot-checks |
+| Headless CMS / backend APIs | **+15 %** | Schema modelling, API endpoints, auth, deployment pipelines |
+| Advanced testing (perf, security, a11y) | **+10 %** | Lighthouse budgets, penetration tests, WCAG AA compliance |
+| **Combined uplift** | **≈+45 %** | Applied to FE man-months from 3.2 |
+
+Applying the combined **≈45 %** uplift to the AI-assisted figures yields:
+
+| Tier | FE-only (AI) | **All-in Effort (AI)** |
+|------|--------------|------------------------|
+| Simple | 2.5–4 MM | **3.5–6 MM** |
+| Medium | 7.5–10 MM | **11–15 MM** |
+| High | 15–22.5 MM | **22–33 MM** |
+| Very High | 30–45 MM | **44–65 MM** |
+
+*(MM = man-months.  Numbers are rounded.)*
+
+These extended figures are what should be used when planning **end-to-end migrations** that include data, backend setup and full QA.
 
 ---
 
