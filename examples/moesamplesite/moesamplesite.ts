@@ -63,7 +63,7 @@ async function initializeSearch() {
 async function initialize(){
   initializeHeroExample();
   //initializePopularLinks();
-  initializeHighlights();
+  //initializeHighlights();
   initializeNewsFeed();
   initializeEncouragementCard();
   initializeHelpSection();
