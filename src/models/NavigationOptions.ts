@@ -18,6 +18,8 @@ export interface NavigationItem {
   url: string;
   /** Submenu items for dropdown menus */
   subItems?: NavigationSubItem[];
+  /** Optional slot name for positioning (e.g., 'end' for right-aligned items) */
+  slot?: string;
 }
 
 /**

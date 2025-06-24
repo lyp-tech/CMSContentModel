@@ -68,7 +68,7 @@ async function initialize(){
   initializeEncouragementCard();
   initializeHelpSection();
   initializeSearch();
-  // initializeFeed();
+  initializeFeed();
   // renderPosts();
 }
 
@@ -165,12 +165,6 @@ function initializeHeroExample() {
     });
 
     const content = `
-    <div id="hero-container">
-      <!-- Hero section will be inserted here -->
-      <main class="container mx-auto px-4 py-8">
-
-      </main>
-    </div>
     <div id="popular-links-container"></div>
     <div id="highlights-container"></div>
     <div id="posts-container" class="py-12"></div>
