@@ -1,76 +1,146 @@
-# Component Creation Guide
+# Web Component Creation Guide
 
-This document outlines the standardized process for creating new renderer components in the CMS Content Model project.
+This document outlines the standardized process for creating new web components in the CMS Content Model project using native Web Components and TypeScript.
 
 ## 1. Directory Structure
 
 ```
 src/
-  models/           # TypeScript interfaces
-  renderers/         # Component implementations
-examples/          # Example implementations
+  components/         # Web component implementations
+  models/             # TypeScript interfaces and types
+examples/            # Example implementations
   [component-name]/
-    [component-name].ts
     [component-name].html
-docs/              # Documentation
+    [component-name].ts
+tests/               # Component tests
+docs/                # Documentation
 ```
 
-## 2. Creating a New Component
+## 2. Creating a New Web Component
 
-### 2.1 Define the Model
+### 2.1 Define the Component Interface
 1. Create a new file in `src/models/` (e.g., `[ComponentName]Options.ts`)
-2. Define TypeScript interfaces for component options
-3. Add JSDoc comments for all properties
+2. Define TypeScript interfaces for component properties and events
+3. Add JSDoc comments for all public APIs
 4. Export all necessary types
 
-### 2.2 Implement the Renderer
-1. Create a new file in `src/renderers/` (e.g., `[ComponentName]Renderer.ts`)
-2. Implement the renderer class with:
-   - Constructor that accepts options
-   - `render()` method that returns HTMLElement
-   - Private helper methods as needed
-3. Use Tailwind CSS for styling
-4. Ensure accessibility (ARIA labels, keyboard nav)
+### 2.2 Implement the Web Component
+1. Create a new file in `src/components/` (e.g., `[ComponentName].ts`)
+2. Implement the web component class extending `HTMLElement`:
+   - Define observed attributes
+   - Implement lifecycle callbacks
+   - Use Shadow DOM for encapsulation
+   - Add event handling
+   - Include accessibility attributes
 
-### 2.3 Create Example Implementation
-1. Add a new directory in `examples/`
-2. Create TypeScript file to demonstrate usage
-3. Create HTML file to display the example
-4. Include all configuration options
+```typescript
+export class ComponentName extends HTMLElement {
+  static get observedAttributes() {
+    return ['prop1', 'prop2'];
+  }
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  // Add other lifecycle methods and helpers
+}
+
+// Register the component
+if (!customElements.get('moe-component-name')) {
+  customElements.define('moe-component-name', ComponentName);
+}
+```
+
+### 2.3 Styling Guidelines
+1. Use CSS custom properties for theming
+2. Include styles in the shadow DOM
+3. Follow mobile-first responsive design
+4. Document all CSS custom properties
+
+### 2.4 Data Handling
+- Use attributes for simple properties
+- For complex data, use JSON in `<script type="application/json">`
+- Implement proper error handling for data parsing
 
 ## 3. Best Practices
 
-### Code Organization
-- Keep components focused on single responsibility
-- Use TypeScript types strictly
-- Follow existing code style
-- Write self-documenting code
+### Component Design
+- Keep components focused and single-purpose
+- Use TypeScript for type safety
+- Follow the Custom Elements standards
+- Implement proper accessibility (ARIA)
 
-### Styling
-- Use Tailwind utility classes
-- Ensure responsive design
-- Include hover/focus states
-- Document custom CSS requirements
+### Performance
+- Use efficient rendering (avoid frequent re-renders)
+- Implement `disconnectedCallback` for cleanup
+- Use event delegation where appropriate
 
 ### Documentation
-- Add JSDoc comments
-- Document public API
+- Document all public attributes, properties, and methods
 - Include usage examples
-- List dependencies
+- Document event types and payloads
+- List CSS custom properties
 
 ## 4. Testing
-- Test in multiple browsers
+- Test in multiple browsers (Chrome, Firefox, Safari, Edge)
 - Verify responsive behavior
-- Check accessibility
+- Check accessibility (a11y)
 - Test with different data scenarios
+- Include unit tests for complex logic
 
 ## 5. Integration
-- Update main app example
-- Ensure no conflicts with other components
+- Update example pages
 - Document any integration requirements
+- Test with other components
+- Document any known issues or limitations
 
-## 6. Review Process
-- Code review
-- Performance check
-- Browser compatibility
-- Mobile responsiveness
+## 6. Framework Usage
+
+### Vanilla Web Components Only
+- Use standard `CustomElement` API
+- No framework-specific code (React, Vue, Angular, etc.)
+- No web component libraries (Lit, Stencil, etc.)
+
+### Allowed Dependencies
+- `@govtechsg/sgds-web-component`
+- TypeScript type definitions
+- Utility functions from shared modules
+
+### Exception Process
+For any additional dependencies:
+1. Document the justification
+2. Get explicit approval
+3. Update this guide with the exception
+
+## 7. Example Component
+
+```html
+<moe-example-component 
+  title="Example"
+  max-items="5"
+  class="custom-style"
+>
+  <script type="application/json">
+    [
+      { "id": 1, "label": "Item 1" },
+      { "id": 2, "label": "Item 2" }
+    ]
+  </script>
+  <span slot="footer">Custom footer content</span>
+</moe-example-component>
+```
+
+## 8. Review Checklist
+- [ ] Code follows project standards
+- [ ] Accessibility verified
+- [ ] Responsive design tested
+- [ ] Documentation complete
+- [ ] Tests written and passing
+- [ ] Browser compatibility verified
+- [ ] Performance impact assessed

@@ -245,13 +245,13 @@ export class NavigationBar extends HTMLElement {
         
         /* SGDS Component Customization */
         sgds-mainnav {
-          --sgds-mainnav-bg: var(--nav-bg);
-          --sgds-mainnav-link-color: var(--nav-text);
-          --sgds-mainnav-link-hover-color: var(--nav-hover);
-          --sgds-dropdown-bg: var(--nav-dropdown-bg);
-          --sgds-dropdown-link-color: var(--nav-dropdown-text);
-          --sgds-dropdown-link-hover-bg: var(--nav-dropdown-hover);
-          --sgds-dropdown-border-color: var(--nav-divider);
+          --sgds-mainnav-bg: var(--nav-bg, #ffffff);
+          --sgds-mainnav-link-color: var(--nav-text, #333333);
+          --sgds-mainnav-link-hover-color: var(--nav-hover, #0066cc);
+          --sgds-dropdown-bg: var(--nav-dropdown-bg, #ffffff);
+          --sgds-dropdown-link-color: var(--nav-dropdown-text, #333333);
+          --sgds-dropdown-link-hover-bg: var(--nav-dropdown-hover, #f8f9fa);
+          --sgds-dropdown-border-color: var(--nav-divider, #e5e7eb);
           --sgds-dropdown-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
