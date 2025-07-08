@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOE Sample Site Example</title>
   <link rel="stylesheet" href="../global.css" />
+  <link rel="stylesheet" href="https://www.moe.gov.sg/microsites/psle-fsbb/assets/css/moe-styles.min.css">
+  <link rel="stylesheet" href="https://www.moe.gov.sg/microsites/psle-fsbb/assets/css/moe-components.min.css">
   <style>
     /* Smooth scrolling for the carousel */
     #moe-home-page-highlights .overflow-x-auto {
@@ -50,6 +52,30 @@
   </style>
 </head>
 <body>
+<div class="bg-[#282e45]">
+<moe-top-header
+        class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+  <script type="application/json">
+    {
+      "links": [
+        {
+          "text": "SchoolFinder",
+          "href": "/schoolfinder"
+        },
+        {
+          "text": "CourseFinder",
+          "href": "/coursefinder"
+        }
+      ],
+      "shortlist": {
+        "count": 0,
+        "href": "/shortlist"
+      },
+      "containerClass": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+    }
+  </script>
+</moe-top-header>
+</div>
   <moe-navigation
           logo-url="../img/img.png"
           logo-alt="Company Logo"
@@ -137,8 +163,8 @@
   ></moe-hero>
   <div id="popular-links-container">
     <popular-links
-            container-class="max-w-6xl mx-auto px-4 py-12"
-            section-class="flex-1 min-w-[240px] bg-white rounded-lg shadow-lg p-8 flex flex-col items-start text-lg"
+            container-class="max-w-6xl mx-auto px-4 py-12 border border-gray-200"
+            section-class="flex-1 min-w-[240px] bg-white rounded-lg p-8 flex flex-col items-start text-lg"
             title-class="text-2xl font-semibold mb-4 block"
             link-class="text-blue-700 hover:text-blue-800 hover:underline"
     >
@@ -259,7 +285,140 @@
       ]
     </script>
   </highlights-carousel>
+<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
+<school-finder>
+  <script type="application/json">
+    {
+      "distanceOptions": [
+        {
+          "label": "Schools within 500m",
+          "value": "0.5"
+        },
+        {
+          "label": "Schools between 500m to 1km",
+          "value": "1"
+        },
+        {
+          "label": "Schools between 1km to 2km",
+          "value": "2"
+        },
+        {
+          "label": "Schools between 2km to 3km",
+          "value": "3"
+        },
+        {
+          "label": "Schools between 3km to 4km",
+          "value": "4"
+        },
+        {
+          "label": "Schools between 4km to 5km",
+          "value": "5"
+        },
+        {
+          "label": "Schools between 5km to 6km",
+          "value": "6"
+        },
+        {
+          "label": "Schools between 6km to 7km",
+          "value": "7"
+        },
+        {
+          "label": "Schools between 7km to 8km",
+          "value": "8"
+        },
+        {
+          "label": "Schools between 8km to 9km",
+          "value": "9"
+        }
+      ],
+      "areas": [
+        {
+          "label": "Area 1",
+          "value": "1"
+        },
+        {
+          "label": "Area 2",
+          "value": "2"
+        },
+        {
+          "label": "Area 3",
+          "value": "3"
+        },
+        {
+          "label": "Area 4",
+          "value": "4"
+        },
+        {
+          "label": "Area 5",
+          "value": "5"
+        },
+        {
+          "label": "Area 6",
+          "value": "6"
+        }
+      ],
+      "partnerCentres": [
+        {
+          "label": "Partner Centre 1",
+          "value": "1"
+        },
+        {
+          "label": "Partner Centre 2",
+          "value": "2"
+        },
+        {
+          "label": "Partner Centre 3",
+          "value": "3"
+        }
+      ],
+      "specialNeeds": [
+        {
+          "id": "1",
+          "label": "Special Need 1",
+          "value": "1"
+        },
+        {
+          "id": "2",
+          "label": "Special Need 2",
+          "value": "2"
+        },
+        {
+          "id": "3",
+          "label": "Special Need 3",
+          "value": "3"
+        }
+      ],
+      "schools": [
+        {
+          "name": "School 1",
+          "area": "Area 1",
+          "address": "Address 1",
+          "distance": "0.5"
+        },
+        {
+          "name": "School 2",
+          "area": "Area 2",
+          "address": "Address 2",
+          "distance": "1",
+          "url": "https://www.example.com/school2",
+          "isFavorite": true,
+          "imageUrl": "/images/school.jpg"
+        },
+        {
+          "name": "School 3",
+          "address": "Address 3",
+          "distance": "2"
+        }
+      ]
+    }</script>
+    </school-finder>
+</div>
   <script type="module" src="moesamplesite.ts"></script>
+  <!-- Import components from the built package -->
+  <script type="module">
+    import '../../dist/cms-content-model.umd.js';
+  </script>
   <!-- Import the search component -->
   <script type="module" src="../../src/components/Search.js"></script>
   <!-- Import the navigation component -->
@@ -267,5 +426,6 @@
   <script type="module" src="../../src/components/Highlights.js"></script>
   <script type="module" src="../../src/components/PopularLinks.js"></script>
   <script type="module" src="../../src/components/Hero.js"></script>
+<script type="module" src="../../src/components/SchoolFinder.js"></script>
 </body>
 </html>

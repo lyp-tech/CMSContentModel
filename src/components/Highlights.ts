@@ -254,7 +254,7 @@ export class HighlightsCarousel extends HTMLElement {
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: white;
+          background: #006afb;
           border: 1px solid #e5e7eb;
           display: flex;
           align-items: center;
@@ -282,7 +282,7 @@ export class HighlightsCarousel extends HTMLElement {
         .nav-arrow svg {
           width: 20px;
           height: 20px;
-          color: #374151;
+          color: white;
         }
       </style>
     `;

@@ -4,8 +4,8 @@ import '@govtechsg/sgds-web-component/themes/root.css';
 
 export class PopularLinks extends HTMLElement {
   private options: Required<PopularLinksOptions> = {
-    containerClass: 'max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12',
-    sectionClass: 'flex-1 min-w-[240px] bg-white rounded-lg shadow-lg p-8 flex flex-col items-start text-lg',
+    containerClass: 'max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 shadow-xl',
+    sectionClass: 'flex-1 min-w-[240px] bg-white rounded-lg p-8 flex flex-col items-start text-lg',
     titleClass: 'text-2xl font-semibold mb-4 block',
     linkClass: 'text-blue-700 hover:text-blue-800 hover:underline text-lg',
     sections: []

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Header Component Example</title>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load the component -->
+  <script type="module" src="/src/components/TopHeader.js"></script>
+</head>
+<body class="bg-gray-100">
+  <!-- Top Header Component -->
+  <moe-top-header id="topHeader">
+    <script type="application/json">
+      {
+        "links": [
+          { "text": "SchoolFinder", "href": "/schoolfinder" },
+          { "text": "CourseFinder", "href": "/coursefinder" },
+          { "text": "Academic calendar", "href": "/calendar" },
+          { "text": "Quick links", "href": "/quick-links" }
+        ],
+        "shortlist": {
+          "count": 0,
+          "href": "/shortlist"
+        }
+      }
+    </script>
+  </moe-top-header>
+
+  <div class="container mx-auto p-8">
+    <h1 class="text-2xl font-bold mb-4">Page Content</h1>
+    <p class="mb-4">This is an example page using the TopHeader component.</p>
+    
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-3">Component Usage</h2>
+      <pre class="bg-gray-800 text-green-400 p-4 rounded overflow-x-auto">
+        <code>
+&lt;moe-top-header&gt;
+  &lt;script type="application/json"&gt;
+    {
+      "links": [
+        { "text": "SchoolFinder", "href": "/schoolfinder" },
+        { "text": "CourseFinder", "href": "/coursefinder" },
+        { "text": "Academic calendar", "href": "/calendar" },
+        { "text": "Quick links", "href": "/quick-links" }
+      ],
+      "shortlist": {
+        "count": 0,
+        "href": "/shortlist"
+      }
+    }
+  &lt;/script&gt;
+&lt;/moe-top-header&gt;
+        </code>
+      </pre>
+    </div>
+  </div>
+
+  <script type="module">
+    // Example of programmatic updates
+    const topHeader = document.getElementById('topHeader');
+    
+    // Update shortlist count after 2 seconds (demo purposes)
+    setTimeout(() => {
+      const data = JSON.parse(topHeader.querySelector('script').textContent);
+      data.shortlist.count = 3;
+      topHeader.querySelector('script').textContent = JSON.stringify(data, null, 2);
+      topHeader.connectedCallback(); // Re-render with new data
+    }, 2000);
+  </script>
+</body>
+</html>

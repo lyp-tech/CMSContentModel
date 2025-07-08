@@ -17,14 +17,6 @@ export function renderPage(title, content) {
         <script type="module" src="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.0.5"></script>
       </head>
       <body class="bg-gray-50 min-h-screen">
-        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-200 mb-8">
-          <div class="max-w-5xl mx-auto flex items-center justify-between px-6 py-4">
-            <h1 class="text-2xl font-bold text-primary">${title}</h1>
-            <nav>
-              <a href="../index.html" class="text-gray-600 hover:text-primary font-medium transition-colors px-3 py-2 rounded">Home</a>
-            </nav>
-          </div>
-        </header>
         <main>
           ${content}
         </main>

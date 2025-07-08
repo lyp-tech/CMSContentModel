@@ -251,8 +251,6 @@ export class NavigationBar extends HTMLElement {
           --sgds-dropdown-bg: var(--nav-dropdown-bg, #ffffff);
           --sgds-dropdown-link-color: var(--nav-dropdown-text, #333333);
           --sgds-dropdown-link-hover-bg: var(--nav-dropdown-hover, #f8f9fa);
-          --sgds-dropdown-border-color: var(--nav-divider, #e5e7eb);
-          --sgds-dropdown-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         /* Smooth transitions */
@@ -270,7 +268,7 @@ export class NavigationBar extends HTMLElement {
         
         /* Style the logo */
         img[slot="brand"] {
-          height: 2.5rem;
+          height: 4rem;
           width: auto;
           object-fit: contain;
         }
